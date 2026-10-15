@@ -34,12 +34,12 @@
           </svg>
           <span><%= theme.about.wechat %></span>
         </div>
-        <% } %> <% if (theme.about.facebook) { %>
-        <div class="link-item copy-btn" data-copy="<%= theme.about.facebook %>">
+        <% } %> <% if (theme.about.qq) { %>
+        <div class="link-item copy-btn" data-copy="<%= theme.about.qq %>">
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-facebook"></use>
+            <use xlink:href="#icon-qq"></use>
           </svg>
-          <span><%= theme.about.facebook %></span>
+          <span><%= theme.about.qq %></span>
         </div>
         <% } %>
       </div>
@@ -58,6 +58,13 @@
         <a href="<%= theme.about.linkedin %>" target="_blank" class="link-item">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-linkedin"></use>
+          </svg>
+          <span>LinkedIn</span>
+        </a>
+        <% } %> <% if (theme.about.facebook) { %>
+        <a href="<%= theme.about.facebook %>" target="_blank" class="link-item">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-facebook"></use>
           </svg>
           <span>LinkedIn</span>
         </a>
