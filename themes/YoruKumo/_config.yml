@@ -12,7 +12,7 @@ menu:
 
 # 轮播图 | swiper
 swiper:
-  image: /images/bg.jpg
+  image: /images/swiper.jpg
   title: 轮播图
 
 # 页面布局
