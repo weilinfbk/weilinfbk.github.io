@@ -1,7 +1,7 @@
 # 网站 | website
 favicon: /images/favicon.ico
 logo:
-title: YoruKumo
+title: Weilin Blog
 
 # 菜单 | menu
 menu:
@@ -25,19 +25,19 @@ layout:
 # 页脚 | footer
 footer:
   count:
-  since: 2025-01-01
+  since: 2026-10-14
   authorLink: https://github.com/asukacc
   themeLink: https://github.com/asukacc/YoruKumo
 
 # 关于页面配置
 about:
-  name: 'Plutavian'
+  name: '玮霖Weilin'
   description: '摸鱼爱好者'
   avatar: /images/avatar.jpg
-  email: 'plutavian@gmail.com'
-  wechat: 'wechat'
+  email: 'weilinxwl@gmail.com'
+  wechat: 'weilin123412'
   qq: 'qq'
-  github: 'https://github.com/asukacc'
+  github: 'https://github.com/weilinfbk'
   linkedin: 'https://www.linkedin.com'
 
 # GSAP 动画配置 | GSAP Animations Configuration
