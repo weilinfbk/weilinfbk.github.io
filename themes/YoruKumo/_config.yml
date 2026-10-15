@@ -33,12 +33,12 @@ footer:
 about:
   name: '玮霖Weilin'
   description: '摸鱼爱好者'
-  avatar: /images/avatar.jpg
+  avatar: /img/avatar1.jpg
   email: 'weilinxwl@gmail.com'
   wechat: 'weilin123412'
   qq: 'qq'
   github: 'https://github.com/weilinfbk'
-  linkedin: 'https://www.linkedin.com'
+  facebook: 'https://www.linkedin.com'
 
 # GSAP 动画配置 | GSAP Animations Configuration
 gsap:
