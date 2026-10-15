@@ -12,7 +12,7 @@ menu:
 
 # 轮播图 | swiper
 swiper:
-  image: https://imgur.com/LwftGF8.jpg
+  image: /images/bg.jpg
   title: 轮播图
 
 # 页面布局
@@ -36,8 +36,7 @@ about:
   avatar: /images/avatar.jpg
   email: 'weilinxwl@gmail.com'
   wechat: 'weilin123412'
-  facebook: 'Weilin'
-  instagram: 'wlweilin'
+  qq: 'qq'
   github: 'https://github.com/weilinfbk'
   linkedin: 'https://www.linkedin.com'
 
