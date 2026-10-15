@@ -33,10 +33,9 @@ footer:
 about:
   name: '玮霖Weilin'
   description: '摸鱼爱好者'
-  avatar: /img/avatar.jpg
+  avatar: /images/avatar.jpg
   email: 'weilinxwl@gmail.com'
   wechat: 'weilin123412'
-  qq: 'qq'
   github: 'https://github.com/weilinfbk'
   facebook: 'https://www.linkedin.com'
 
