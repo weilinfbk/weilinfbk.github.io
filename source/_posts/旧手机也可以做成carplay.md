@@ -1,7 +1,7 @@
 ---
 title: 旧手机也可以做成carplay?
 date: 2026-10-16 18:14:12
-tags:
+tags: 旧手机 carplay 车机 
 ---
 # Diplay
 ##### https://github.com/shihabal3amri/Diplay
