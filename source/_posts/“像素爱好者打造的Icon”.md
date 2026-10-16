@@ -4,7 +4,7 @@ date: 2026-10-16 07:28:36
 tags: 像素 电脑 图标
 ---
 # PixelatedSeal 
-###### https://pixelated.foreignseal.com/
+file:///data/user/0/com.foxdebug.acode/files/public/myblog/source/_posts/“像素爱好者打造的Icon”.md###### https://pixelated.foreignseal.com/
 为像素爱好者打造的 Emoji 与 Icon 素材宝库
 在如今充满扁平化与 3D 渲染设计的网络世界里，复古且充满怀旧感的像素风（Pixel Art）依然拥有极其独特的吸引力。不论是用于 Discord 社区表情、独立游戏界面，还是个人博客的精美点缀，像素小图标都能带来浓厚而可爱的复古氛围。
 今天为大家推荐的网站 pixelatedSeal（由创作者 foreignSeal 打造），正是一个专注于像素风格 Emoji 和 Icon 的在线资源库。
@@ -25,7 +25,7 @@ Discord 社区交互：网页顶部提供了 Discord 官方链接，方便全球
 独立开发与持续更新：网站目前仍处于持续开发和补充素材的阶段（Work in progress），作者也开启了 Ko-fi（Buy Me a Coffee）赞助通道，供喜爱的玩家支持项目运营。
 
 🛠️ 适合哪些人群使用？
-Discord / Telegram 社区管理员：寻找独特且具有辨识度的自定义服务器表情。
+Discord/Telegram社区管理员：寻找独特且具有辨识度的自定义服务器表情。
 独立游戏开发者：用作游戏 UI、道具图标（Items/Icons）或状态提示。
 个人博客与网页设计者：为按钮、标题栏或文章分类添加生动的像素风格节点。
 如果你也在寻找一套独特的像素风表情包或图示库，不妨亲自到 pixelatedSeal 上探索一番！
