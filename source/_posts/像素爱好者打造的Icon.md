@@ -4,7 +4,7 @@ date: 2026-10-16 07:28:36
 tags: 像素 电脑 图标
 ---
 # PixelatedSeal 
-file:///data/user/0/com.foxdebug.acode/files/public/myblog/source/_posts/“像素爱好者打造的Icon”.md###### https://pixelated.foreignseal.com/
+###### https://pixelated.foreignseal.com/
 为像素爱好者打造的 Emoji 与 Icon 素材宝库
 在如今充满扁平化与 3D 渲染设计的网络世界里，复古且充满怀旧感的像素风（Pixel Art）依然拥有极其独特的吸引力。不论是用于 Discord 社区表情、独立游戏界面，还是个人博客的精美点缀，像素小图标都能带来浓厚而可爱的复古氛围。
 今天为大家推荐的网站 pixelatedSeal（由创作者 foreignSeal 打造），正是一个专注于像素风格 Emoji 和 Icon 的在线资源库。
