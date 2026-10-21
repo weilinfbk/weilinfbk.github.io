@@ -3,6 +3,8 @@ title: Eatcat Key Customized
 date: 2026-10-20 00:00:01
 tags: webgame minigame 
 ---
+**[中文](https://weilinfbk.github.io/2026/10/19/%E5%B0%8F%E6%B8%B8%E6%88%8F/) | [English](https://weilinfbk.github.io/2026/10/19/mini/)**
+
 
 
 🐱 Basic Drop Symbols
