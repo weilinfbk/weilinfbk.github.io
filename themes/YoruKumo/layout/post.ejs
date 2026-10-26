@@ -135,10 +135,26 @@
       font-size: 1.6rem;
     }
   }
-/* 强制显示，防止被主题动画隐藏 */
-.post-page, .post-article, .post-content {
-  opacity: 1 !important; 
-  visibility: visible !important;
-  transform: none !important;
+/* 定义入场动画：从下方浮现 */
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(30px); /* 初始位置偏下 30 像素 */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* 最终回到原位 */
+  }
+}
+
+/* 让文章卡片应用这个动画 */
+.post-article {
+  /* 动画名称 | 持续 0.8秒 | 缓动效果 | 保持最后状态 */
+  animation: slideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+/* 让顶部大图也动一下（可选，有点呼吸感） */
+.post-banner {
+  animation: slideUpFade 1s ease-out forwards;
 }
 </style>
