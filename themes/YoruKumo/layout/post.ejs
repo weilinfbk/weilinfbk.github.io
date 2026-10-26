@@ -1,18 +1,17 @@
-<!-- 1. 引入顶部导航栏（把 Weilin Blog 和三条线找回来） -->
 <%- partial('_partial/header') %>
 
 <div class="post-page-wrapper">
   <main class="post-container">
     <article class="post-card">
       
-      <!-- 2. 顶部封面图 -->
+      <!-- 1. 顶部封面图 -->
       <% if (page.cover || page.top_img) { %>
         <div class="post-cover">
           <img src="<%- page.cover || page.top_img %>" alt="<%= page.title %>">
         </div>
       <% } %>
 
-      <!-- 3. 标题和元信息 -->
+      <!-- 2. 标题和元信息 -->
       <div class="post-header">
         <h1 class="post-title"><%= page.title %></h1>
         
@@ -32,7 +31,7 @@
         </div>
       </div>
 
-      <!-- 4. 正文内容 -->
+      <!-- 3. 正文内容 -->
       <div class="post-content">
         <%- page.content %>
       </div>
@@ -41,12 +40,9 @@
   </main>
 </div>
 
-<!-- 样式部分 -->
 <style>
-  /* 去掉了强制黑色背景，让主题原有的背景图和毛玻璃效果生效 */
-
   .post-page-wrapper {
-    padding: 30px 20px 40px; /* 顶部留出 30px，防止被导航栏挡住 */
+    padding: 10px 20px 40px;
     display: flex;
     justify-content: center;
     min-height: 100vh;
@@ -55,21 +51,39 @@
   .post-container {
     width: 100%;
     max-width: 850px;
+    margin-top: -60px; 
     position: relative;
     z-index: 10;
   }
 
-  /* 暗黑卡片主体 */
+  /* 默认亮色模式下的卡片 */
   .post-card {
-    background-color: rgba(30, 30, 30, 0.95); /* 稍微带点透明质感 */
+    background-color: #ffffff;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px); /* 毛玻璃效果 */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .post-title { color: #222222; }
+  .post-meta { color: #666666; }
+  .post-content { color: #333333; }
+  .meta-divider { color: #cccccc; margin: 0 4px; }
+
+  /* 暗色模式自适应 */
+  @media (prefers-color-scheme: dark) {
+    .post-card {
+      background-color: rgba(30, 30, 30, 0.95);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+    }
+    .post-title { color: #ffffff; }
+    .post-meta { color: #aaaaaa; }
+    .post-content { color: #d4d4d4; }
+    .meta-divider { color: #555555; }
   }
 
-  /* 卡片内的封面图 */
+  /* 通用样式 */
   .post-cover img {
     width: 100%;
     max-height: 450px;
@@ -77,68 +91,42 @@
     display: block;
   }
 
-  /* 头部区域 */
-  .post-header {
-    padding: 35px 40px 10px;
-  }
+  .post-header { padding: 35px 40px 10px; }
 
-  /* 大标题 */
   .post-title {
     font-size: 2.2rem;
-    color: #ffffff;
     font-weight: 700;
     line-height: 1.4;
     margin: 0 0 20px 0;
   }
 
-  /* 元信息排版 */
   .post-meta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    color: #aaaaaa;
     font-size: 0.95rem;
     margin-bottom: 15px;
   }
-  
-  .meta-divider {
-    color: #555;
-    margin: 0 4px;
-  }
 
-  /* 正文区域 */
   .post-content {
     padding: 15px 40px 40px;
-    color: #d4d4d4;
     font-size: 1.05rem;
     line-height: 1.9;
     letter-spacing: 0.5px;
   }
 
   .post-content a { color: #66b2ff; text-decoration: none; }
-  .post-content strong { color: #ffffff; }
+  .post-content strong { color: inherit; }
   .post-content img { max-width: 100%; border-radius: 8px; margin: 15px 0; }
 
-  /* 📱 手机端适配 */
   @media (max-width: 768px) {
-    .post-page-wrapper {
-      padding: 90px 10px 20px; /* 手机端顶部留 90px */
-    }
-    .post-header {
-      padding: 20px 20px 10px;
-    }
-    .post-content {
-      padding: 10px 20px 30px;
-    }
-    .post-title {
-      font-size: 1.7rem;
-    }
-    .post-meta {
-      font-size: 0.85rem;
-    }
-    .meta-divider {
-      display: none; 
-    }
+    .post-page-wrapper { padding: 10px 10px 20px; }
+    .post-container { margin-top: -40px; }
+    .post-header { padding: 20px 20px 10px; }
+    .post-content { padding: 10px 20px 30px; }
+    .post-title { font-size: 1.7rem; }
+    .post-meta { font-size: 0.85rem; }
+    .meta-divider { display: none; }
   }
 </style>
