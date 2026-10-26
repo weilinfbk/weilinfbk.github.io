@@ -81,6 +81,7 @@
           <svg class="icon" aria-hidden="true">
         </svg>         
         <span>XiaoHongShu</span>
+        </a>
         <% } %>
       </div>
     </div>
@@ -97,7 +98,7 @@
     const copyButtons = document.querySelectorAll('.about-links .copy-btn');
     if (copyButtons.length === 0) return;
 
-    // 创建 toast 容器 (Create toast container if it doesn't exist)
+    // 创建 toast 容器
     let toastContainer = document.querySelector('.toast-container');
     if (!toastContainer) {
       toastContainer = document.createElement('div');
@@ -119,12 +120,9 @@
       `;
 
       toastContainer.appendChild(toast);
-
-      // 触发重绘以启动动画
-      toast.offsetHeight;
+      toast.offsetHeight; // 触发重绘
       toast.classList.add('show');
 
-      // 2秒后淡出并移除
       setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => {
@@ -135,30 +133,56 @@
 
     copyButtons.forEach(btn => {
       btn.addEventListener('click', function () {
-        const textToCopy = this.getAttribute('data-copy');
+        const textToCopy = btn.getAttribute('data-copy');
         if (!textToCopy) return;
 
-        navigator.clipboard.writeText(textToCopy).then(
-          function () {
+        // --- 终极降级复制大法（专治手机浏览器拦截） ---
+        function fallbackCopyText() {
+          const textArea = document.createElement('textarea');
+          textArea.value = textToCopy;
+          textArea.style.position = 'fixed';
+          textArea.style.opacity = '0';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            if (successful) {
+              const successMsg = window.ABOUT_TRANSLATIONS.copied || '已复制到剪贴板！';
+              showToast(successMsg, true);
+            } else {
+              showToast('请长按手动复制', false);
+            }
+          } catch (err) {
+            document.body.removeChild(textArea);
+            showToast('请长按手动复制', false);
+          }
+        }
+
+        // 先尝试现代 API
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(textToCopy).then(() => {
             const successMsg = window.ABOUT_TRANSLATIONS.copied || '已复制到剪贴板！';
             showToast(successMsg, true);
-
-            // GSAP 弹性点按反馈
+            
+            // 保留你的 GSAP 弹跳动画
             if (typeof gsap !== 'undefined') {
               gsap.fromTo(btn,
                 { scale: 0.95 },
                 { scale: 1.03, duration: 0.4, ease: 'elastic.out(1.2, 0.5)', overwrite: 'auto' }
               );
             }
-          },
-          function (err) {
-            console.error('Failed to copy: ', err);
-            const failMsg = window.ABOUT_TRANSLATIONS.copy_failed || '复制失败，请手动复制';
-            showToast(failMsg, false);
-          }
-        );
+          }).catch(() => {
+            // 现代 API 被拒绝，直接暴力降级
+            fallbackCopyText();
+          });
+        } else {
+          // 浏览器根本不支持，直接暴力降级
+          fallbackCopyText();
+        }
       });
     });
   });
 </script>
-
