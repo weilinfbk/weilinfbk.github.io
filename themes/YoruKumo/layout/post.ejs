@@ -3,17 +3,14 @@
 <div class="post-page-wrapper">
   <main class="post-container">
     
-    <!-- 只有一个完整的大卡片 -->
-    <article class="post-card">
-      
-      <!-- 封面图 -->
+    <!-- 卡片1：封面 + 标题 + 元信息 -->
+    <article class="post-card top-card">
       <% if (page.cover || page.top_img) { %>
         <div class="post-cover">
           <img src="<%- page.cover || page.top_img %>" alt="<%= page.title %>">
         </div>
       <% } %>
 
-      <!-- 标题和元信息 -->
       <div class="post-header">
         <h1 class="post-title"><%= page.title %></h1>
         <div class="post-meta">
@@ -28,19 +25,20 @@
           <span>⏱️ 阅读: <%= min2read(page.content) %> 分钟</span>
         </div>
       </div>
+    </article>
 
-      <!-- 正文内容 -->
-      <div class="post-content">
+    <!-- 卡片2：正文内容 -->
+    <article class="post-card content-card">
+      <div class="post-content" id="article-content">
         <%- page.content %>
       </div>
-
     </article>
 
   </main>
 </div>
 
 <style>
-  /* 距离顶部大图留一点空间 */
+  /* 页面外层留白 */
   .post-page-wrapper {
     padding: 30px 20px 60px; 
     display: flex;
@@ -48,12 +46,16 @@
     min-height: 100vh;
   }
 
+  /* 关键：这里控制了两个卡片的分离 */
   .post-container {
     width: 100%;
     max-width: 850px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 👈 两个卡片之间的缝隙大小，如果不想要太宽可以改成 15px */
   }
 
-  /* 完整的卡片（无缝隙，不会断开） */
+  /* 卡片基础样式：亮色模式 */
   .post-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -66,10 +68,10 @@
   .post-content { color: #333333; }
   .meta-divider { color: #cccccc; margin: 0 4px; }
 
-  /* 暗色模式（保持你之前觉得OK的纯深色） */
+  /* 卡片基础样式：暗色模式（柔和深灰，不是死黑） */
   @media (prefers-color-scheme: dark) {
     .post-card {
-      background-color: #1e1e1e;
+      background-color: #1e1e1e; /* 柔和的深色背景 */
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       border: 1px solid rgba(255,255,255,0.05);
     }
@@ -79,29 +81,29 @@
     .meta-divider { color: #555555; }
   }
 
-  /* 封面图 */
+  /* 卡片1的顶部 */
   .post-cover img {
     width: 100%;
     max-height: 450px;
     object-fit: cover;
     display: block;
   }
-
-  /* 标题区域 */
   .post-header { padding: 30px 40px 10px; }
   .post-title { font-size: 2.2rem; font-weight: 700; line-height: 1.4; margin: 0 0 20px 0; }
   .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; margin-bottom: 10px; }
 
-  /* 正文区域（和标题无缝衔接） */
-  .post-content { padding: 10px 40px 40px; font-size: 1.05rem; line-height: 1.9; letter-spacing: 0.5px; }
+  /* 卡片2的正文 */
+  .content-card { padding: 40px; }
+  .post-content { font-size: 1.05rem; line-height: 1.9; letter-spacing: 0.5px; }
   .post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
   .post-content pre { background: #1a1a1a !important; padding: 16px; border-radius: 12px; overflow-x: auto; }
 
   /* 手机端适配 */
   @media (max-width: 768px) {
     .post-page-wrapper { padding: 20px 10px 30px; }
+    .post-container { gap: 15px; } /* 手机端缝隙稍微小一点 */
     .post-header { padding: 20px 20px 10px; }
-    .post-content { padding: 10px 20px 20px; }
+    .content-card { padding: 20px; }
     .post-title { font-size: 1.7rem; }
     .meta-divider { display: none; }
   }
