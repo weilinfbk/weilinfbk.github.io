@@ -1,58 +1,110 @@
 <!-- 头部 -->
 <%- partial('_partial/header',{}, {cache: true}) %>
 
-<!-- 页面内容 -->
+<!-- 页面内容（网格卡片版） -->
 <div class="page-content">
-  <main class="post-list timeline-wrapper">
-    <!-- 定义 lastYear 变量 -->
-    <% var lastYear; %>
-
-    <!-- 遍历文章 -->
-    <% page.posts.each(function(post){ %>
-
-    <!-- 获取文章年份 -->
-    <% var year = date(post.date,'YYYY'); %>
-
-    <!-- 如果年份变化，则显示年份标题 -->
-    <% if (lastYear !== year) { %>
-    <div class="timeline-year-node">
-      <div class="timeline-date"></div>
-      <div class="timeline-axis">
-        <div class="timeline-year-dot"></div>
-      </div>
-      <div class="timeline-content">
-        <div class="timeline-year-text"><%= year %></div>
-      </div>
-    </div>
-    <% } %>
-
-    <div class="timeline-item">
-      <div class="timeline-date">
-        <span class="timeline-date-md"><%= date(post.date, 'MM-DD') %></span>
-        <span class="timeline-date-year"><%= date(post.date, 'YYYY') %></span>
-      </div>
-      <div class="timeline-axis">
-        <div class="timeline-dot"></div>
-      </div>
-      <div class="timeline-content">
-        <a href="<%- url_for(post.path) %>">
-          <div class="postItem">
-            <p class="postItem-title" title="<%= post.title || __('post.untitled') %>">
-              <%= post.title || __('post.untitled') %>
-            </p>
-            <p class="postItem-date"><%= date(post.date, 'YYYY-MM-DD') %></p>
-            <p class="postItem-tags">
-              <% post.tags.each(function(tag){ %>
-              <span class="postItem-tag"><%= tag.name %></span>
-              <% }) %>
-            </p>
-            <p class="postItem-excerpt"><%= post.excerpt || '' %></p>
+  <div class="card-grid">
+    <% page.posts.each(function(post) { %>
+      <article class="post-card">
+        <!-- 封面图部分 -->
+        <div class="card-cover">
+          <a href="<%- url_for(post.path) %>">
+            <!-- 如果你在文章开头写了 cover: 图片链接，就会显示。没写就显示默认图 -->
+            <img src="<%- post.cover || post.top_img || '/images/avatar.jpg' %>" alt="<%= post.title %>">
+          </a>
+        </div>
+        
+        <!-- 文字信息部分 -->
+        <div class="card-info">
+          <h2 class="card-title">
+            <a href="<%- url_for(post.path) %>"><%= post.title || '(无标题)' %></a>
+          </h2>
+          
+          <p class="card-excerpt">
+            <%- strip_html(post.excerpt || post.content).substring(0, 60) %>...
+          </p>
+          
+          <div class="card-meta">
+            <span class="card-date">📅 <%= date(post.date, 'YYYY-MM-DD') %></span>
+            <% if (post.categories && post.categories.length) { %>
+              <span class="card-category">📁 <%= post.categories.data[0].name %></span>
+            <% } %>
           </div>
-        </a>
-      </div>
-    </div>
-
-    <!-- 更新 lastYear 变量 -->
-    <% lastYear = year; %> <% }); %>
-  </main>
+        </div>
+      </article>
+    <% }) %>
+  </div>
 </div>
+</div>
+
+<style>
+  /* 网格容器 */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  /* 单个卡片 */
+  .post-card {
+    background: var(--bg-color, #1e1e1e); /* 适配暗色模式 */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 鼠标悬浮时的浮动效果 */
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  /* 封面图 */
+  .card-cover img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* 文字区域 */
+  .card-info {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+  }
+  
+  .card-title a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .card-excerpt {
+    font-size: 0.9rem;
+    color: #888;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    flex-grow: 1;
+  }
+
+  /* 底部日期和分类 */
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #666;
+    border-top: 1px solid rgba(128,128,128,0.2);
+    padding-top: 10px;
+  }
+</style>
