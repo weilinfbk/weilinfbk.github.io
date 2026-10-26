@@ -58,34 +58,15 @@
   </main>
 </div>
 
-<!-- ================= 右下角悬浮工具栏 ================= -->
-<div class="custom-floating-dock">
-  <div class="dock-avatar">
-    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Weilin&backgroundColor=b6e3f4" alt="avatar">
-  </div>
-  <button class="dock-btn" onclick="toggleDayNight()" title="切换模式">◐</button>
-  <button class="dock-btn" onclick="alert('设置功能开发中...')" title="设置">⚙</button>
-  <button class="dock-btn" id="toc-trigger" title="目录">☰</button>
-  <button class="dock-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="回到顶部">↑</button>
-</div>
-
-<!-- 目录面板 -->
-<div class="custom-toc-panel" id="toc-panel">
-  <div class="toc-header">
-    <span>☰ 目录</span>
-    <span class="toc-count" id="toc-count">0</span>
-  </div>
-  <ul class="toc-list" id="toc-list"></ul>
-</div>
-
 <style>
-  /* ================= 基础排版样式 ================= */
+  /* 外层布局，控制卡片往下推，不贴大图 */
   .post-page-wrapper {
     padding: 40px 20px 60px; 
     display: flex;
     justify-content: center;
   }
 
+  /* 控制卡片之间的缝隙 */
   .post-container {
     width: 100%;
     max-width: 850px;
@@ -94,6 +75,7 @@
     gap: 20px; 
   }
 
+  /* 卡片基础样式（亮色模式） */
   .post-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -106,6 +88,7 @@
   .post-content { color: #333333; }
   .meta-divider { color: #cccccc; margin: 0 4px; }
 
+  /* 卡片基础样式（暗色模式） */
   @media (prefers-color-scheme: dark) {
     .post-card {
       background-color: #1e1e1e;
@@ -118,19 +101,25 @@
     .meta-divider { color: #555555; }
   }
 
-  .post-cover img { width: 100%; max-height: 450px; object-fit: cover; display: block; }
+  /* 封面图 */
+  .post-cover img { 
+    width: 100%; 
+    max-height: 450px; 
+    object-fit: cover; 
+    display: block; 
+  }
+  
+  /* 标题区 */
   .post-header { padding: 30px 40px 10px; }
   .post-title { font-size: 2.2rem; font-weight: 700; line-height: 1.4; margin: 0 0 20px 0; }
   .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; margin-bottom: 10px; }
 
+  /* 正文区（你确认好的 0.90rem 字体和段落间距） */
   .content-card { padding: 40px; }
   .post-content { font-size: 0.90rem; line-height: 1.9; letter-spacing: 0.5px; }
   .post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
   .post-content pre { background: #1a1a1a !important; padding: 16px; border-radius: 12px; overflow-x: auto; }
-  
-  .post-content p {
-    margin-bottom: 1.5rem !important;
-  }
+  .post-content p { margin-bottom: 1.5rem !important; }
 
   /* 底部导航卡片 */
   .post-navigation { display: flex; flex-direction: column; gap: 15px; }
@@ -157,168 +146,4 @@
     .meta-divider { display: none; }
     .nav-card { height: 130px; }
   }
-
-  /* ================= 悬浮工具栏样式 ================= */
-  .custom-floating-dock {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    z-index: 999;
-  }
-  .dock-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #eee;
-    overflow: hidden;
-    border: 2px solid #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    margin-bottom: 5px;
-  }
-  .dock-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  
-  .dock-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
-    border: 1px solid rgba(0,0,0,0.08);
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-  }
-  .dock-btn:hover { background: #fff; transform: scale(1.1); }
-
-  .custom-toc-panel {
-    position: fixed;
-    bottom: 80px;
-    right: 80px;
-    width: 280px;
-    max-height: 60vh;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 16px;
-    padding: 20px;
-    z-index: 998;
-    display: none;
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  }
-  .custom-toc-panel.show { display: flex; }
-  .toc-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #333;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-  }
-  .toc-count { font-size: 1.5rem; color: #999; font-style: italic; }
-  .toc-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; }
-  .toc-list li { margin-bottom: 12px; }
-  .toc-list a { color: #666; text-decoration: none; font-size: 0.95rem; display: block; transition: color 0.2s; }
-  .toc-list a:hover { color: #000; font-weight: bold; }
-  .toc-list li.toc-h3 { padding-left: 15px; }
-  .toc-list li.toc-h3 a { font-size: 0.85rem; color: #888; }
-
-  /* 暗色模式适配 */
-  @media (prefers-color-scheme: dark) {
-    .dock-avatar { border-color: #555; background: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-    .dock-btn {
-      background: rgba(40, 40, 40, 0.9);
-      color: #ccc;
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .dock-btn:hover { background: #555; color: #fff; }
-    .custom-toc-panel {
-      background: rgba(30, 30, 30, 0.95);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .toc-header { color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .toc-count { color: #666; }
-    .toc-list a { color: #ccc; }
-    .toc-list a:hover { color: #fff; }
-    .toc-list li.toc-h3 a { color: #999; }
-  }
-
-  @media (max-width: 768px) {
-    .custom-floating-dock { bottom: 40px; right: 15px; }
-    .custom-toc-panel { right: 75px; width: 240px; bottom: 40px; }
-  }
 </style>
-
-<script>
-  function toggleDayNight() {
-    document.documentElement.classList.toggle('manual-dark');
-    if (document.documentElement.classList.contains('manual-dark')) {
-        document.body.style.filter = "invert(1) hue-rotate(180deg)";
-        document.querySelectorAll('img').forEach(img => img.style.filter = "invert(1) hue-rotate(180deg)");
-    } else {
-        document.body.style.filter = "none";
-        document.querySelectorAll('img').forEach(img => img.style.filter = "none");
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const content = document.querySelector('.post-content'); 
-    const tocList = document.getElementById('toc-list');
-    const tocCount = document.getElementById('toc-count');
-    const tocPanel = document.getElementById('toc-panel');
-    const tocTrigger = document.getElementById('toc-trigger');
-
-    if (!content) return;
-
-    const headings = content.querySelectorAll('h2, h3');
-    let count = 0;
-
-    headings.forEach((heading, index) => {
-      const id = 'heading-' + index;
-      heading.id = id;
-
-      const li = document.createElement('li');
-      li.className = heading.tagName.toLowerCase() === 'h2' ? 'toc-h2' : 'toc-h3';
-      
-      const a = document.createElement('a');
-      a.href = '#' + id;
-      a.textContent = heading.textContent;
-      
-      a.addEventListener('click', function(e) {
-        e.preventDefault();
-        heading.scrollIntoView({ behavior: 'smooth' });
-        tocPanel.classList.remove('show');
-      });
-
-      li.appendChild(a);
-      tocList.appendChild(li);
-      count++;
-    });
-
-    tocCount.textContent = count;
-
-    tocTrigger.addEventListener('click', function(e) {
-      e.stopPropagation();
-      tocPanel.classList.toggle('show');
-    });
-
-    document.addEventListener('click', function(e) {
-      if (!tocPanel.contains(e.target) && !tocTrigger.contains(e.target)) {
-        tocPanel.classList.remove('show');
-      }
-    });
-  });
-</script>
