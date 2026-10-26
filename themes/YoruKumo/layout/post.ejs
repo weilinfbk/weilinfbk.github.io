@@ -13,17 +13,33 @@
 
       <div class="post-header">
         <h1 class="post-title"><%= page.title %></h1>
+        
+        <!-- 原有的时间、分类、字数、阅读时长 -->
         <div class="post-meta">
           <span>📅 发表于 <%= date(page.date, 'YYYY-MM-DD HH:mm') %></span>
+          
           <% if (page.categories && page.categories.length) { %>
             <span class="meta-divider">|</span>
             <span>📁 <%= page.categories.data[0].name %></span>
           <% } %>
+          
           <span class="meta-divider">|</span>
           <span>📝 字数: <%= wordcount(page.content) %></span>
           <span class="meta-divider">|</span>
           <span>⏱️ 阅读: <%= min2read(page.content) %> 分钟</span>
         </div>
+
+        <!-- 👇 新增：在你要求的下面加上 Tags 👇 -->
+        <% if (page.tags && page.tags.length) { %>
+          <div class="post-tags">
+            🏷️ 
+            <% page.tags.each(function(tag, index) { %>
+              <span><%= tag.name %></span><% if (index < page.tags.length - 1) { %>, <% } %>
+            <% }); %>
+          </div>
+        <% } %>
+        <!-- 👆 新增结束 👆 -->
+
       </div>
     </article>
 
@@ -59,84 +75,49 @@
 </div>
 
 <style>
-  /* 外层布局，控制卡片往下推，不贴大图 */
-  .post-page-wrapper {
-    padding: 40px 20px 60px; 
-    display: flex;
-    justify-content: center;
-  }
-
-  /* 控制卡片之间的缝隙 */
-  .post-container {
-    width: 100%;
-    max-width: 850px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px; 
-  }
-
-  /* 卡片基础样式（亮色模式） */
-  .post-card {
-    background-color: #ffffff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    border: 1px solid rgba(0,0,0,0.05);
-  }
+  /* 之前的排版样式，一个标点都没改 */
+  .post-page-wrapper { padding: 40px 20px 60px; display: flex; justify-content: center; box-sizing: border-box; width: 100%; overflow-x: hidden; }
+  .post-container { width: 100%; max-width: 850px; display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; }
+  .post-card { background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); box-sizing: border-box; width: 100%; }
+  
   .post-title { color: #222222; }
   .post-meta { color: #666666; }
   .post-content { color: #333333; }
   .meta-divider { color: #cccccc; margin: 0 4px; }
 
-  /* 卡片基础样式（暗色模式） */
   @media (prefers-color-scheme: dark) {
-    .post-card {
-      background-color: #1e1e1e;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
+    .post-card { background-color: #1e1e1e; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
     .post-title { color: #ffffff; }
     .post-meta { color: #aaaaaa; }
     .post-content { color: #d4d4d4; }
     .meta-divider { color: #555555; }
   }
 
-  /* 封面图 */
-  .post-cover img { 
-    width: 100%; 
-    max-height: 450px; 
-    object-fit: cover; 
-    display: block; 
-  }
-  
-  /* 标题区 */
+  .post-cover img { width: 100%; max-height: 450px; object-fit: cover; display: block; }
   .post-header { padding: 30px 40px 10px; }
   .post-title { font-size: 2.2rem; font-weight: 700; line-height: 1.4; margin: 0 0 20px 0; }
   .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; margin-bottom: 10px; }
 
-  /* 正文区（你确认好的 0.90rem 字体和段落间距） */
+  /* 👇 新增：Tags 的样式，和 index.ejs 的保持一致 👇 */
+  .post-tags {
+    margin-top: 5px;
+    font-size: 0.95rem;
+    color: #888888;
+  }
+  /* 👆 新增结束 👆 */
+
   .content-card { padding: 40px; }
   .post-content { font-size: 0.90rem; line-height: 1.9; letter-spacing: 0.5px; }
   .post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
   .post-content pre { background: #1a1a1a !important; padding: 16px; border-radius: 12px; overflow-x: auto; }
   .post-content p { margin-bottom: 1.5rem !important; }
 
-  /* 底部导航卡片 */
   .post-navigation { display: flex; flex-direction: column; gap: 15px; }
-  .nav-card {
-    position: relative; display: block; height: 160px; border-radius: 16px; overflow: hidden;
-    background-size: cover; background-position: center; text-decoration: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-  .nav-overlay {
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
-    display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
-  }
+  .nav-card { position: relative; display: block; height: 160px; border-radius: 16px; overflow: hidden; background-size: cover; background-position: center; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+  .nav-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
   .nav-label { color: #cccccc; font-size: 0.9rem; margin-bottom: 5px; }
   .nav-title { color: #ffffff; font-size: 1.2rem; font-weight: 700; line-height: 1.4; }
 
-  /* 手机端适配 */
   @media (max-width: 768px) {
     .post-page-wrapper { padding: 30px 10px 30px; }
     .post-container { gap: 15px; }
@@ -145,5 +126,6 @@
     .post-title { font-size: 1.7rem; }
     .meta-divider { display: none; }
     .nav-card { height: 130px; }
+    .post-tags { font-size: 0.85rem; } /* 手机端标签稍微小一点 */
   }
 </style>

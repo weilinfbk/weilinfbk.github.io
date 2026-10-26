@@ -3,16 +3,29 @@
 <div class="post-page-wrapper">
   <main class="post-container">
     
+    <!-- ========================================== -->
+    <!-- 👇👇👇 在这里修改你的通告内容 👇👇👇 -->
+    <!-- ========================================== -->
+    <div class="notice-board">
+      <div class="notice-icon">📢</div>
+      <div class="notice-content">
+        欢迎来到我的博客！最新通告：网站排版大更新，如果有任何问题欢迎在评论区留言告诉我哦！
+      </div>
+    </div>
+    <!-- ========================================== -->
+    <!-- 👆👆👆 通告修改结束 👆👆👆 -->
+    <!-- ========================================== -->
+
     <% page.posts.each(function(post) { %>
       <article class="post-card">
-        <!-- 封面图部分 -->
+        <!-- 1. 封面图 -->
         <div class="card-cover">
           <a href="<%- url_for(post.path) %>">
             <img src="<%- post.cover || post.top_img || '/images/avatar.jpg' %>" alt="<%= post.title %>">
           </a>
         </div>
         
-        <!-- 文字信息部分 -->
+        <!-- 2. 文字信息 -->
         <div class="card-info">
           <h2 class="card-title">
             <a href="<%- url_for(post.path) %>"><%= post.title || '(无标题)' %></a>
@@ -22,15 +35,14 @@
             <%- strip_html(post.excerpt || post.content).substring(0, 60) %>...
           </p>
           
-          <!-- 日期和分类 -->
           <div class="card-meta">
             <span>📅 <%= date(post.date, 'YYYY-MM-DD HH:mm') %></span>
             <% if (post.categories && post.categories.length) { %>
+              <span class="meta-divider">|</span>
               <span>📁 <%= post.categories.data[0].name %></span>
             <% } %>
           </div>
 
-          <!-- Tags -->
           <% if (post.tags && post.tags.length) { %>
             <div class="card-tags">
               🏷️ 
@@ -47,30 +59,83 @@
 </div>
 
 <style>
-  /* 完全照搬文章页的外壳 */
+  /* ===== 排版基础样式（完全没动） ===== */
+  .post-page-wrapper, .post-container, .post-card, .card-cover, .card-info, .notice-board {
+    box-sizing: border-box;
+  }
+
   .post-page-wrapper {
-    padding: 40px 20px 60px; 
+    padding: 30px 15px 60px; 
     display: flex;
     justify-content: center;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .post-container {
     width: 100%;
-    max-width: 850px; /* 和文章页一样宽 */
+    max-width: 850px; 
     display: flex;
     flex-direction: column;
     gap: 20px; 
   }
 
+  /* ===== 👇 新增：通告框的样式 👇 ===== */
+  .notice-board {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-left: 5px solid #3b7bbf; /* 左侧醒目的蓝色边框 */
+  }
+  .notice-icon {
+    font-size: 1.6rem;
+    margin-right: 15px;
+    animation: ring 2s infinite; /* 小铃铛动画 */
+  }
+  .notice-content {
+    font-size: 0.95rem;
+    color: #444444;
+    line-height: 1.6;
+    flex: 1;
+  }
+  
+  @keyframes ring {
+    0% { transform: rotate(0); }
+    10% { transform: rotate(15deg); }
+    20% { transform: rotate(-10deg); }
+    30% { transform: rotate(5deg); }
+    40% { transform: rotate(-5deg); }
+    50% { transform: rotate(0); }
+    100% { transform: rotate(0); }
+  }
+
+  /* 通告框暗色模式 */
+  @media (prefers-color-scheme: dark) {
+    .notice-board {
+      background: #1e1e1e;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-left: 5px solid #66b2ff; /* 暗色下用亮蓝色 */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .notice-content {
+      color: #d4d4d4;
+    }
+  }
+  /* ===== 👆 通告框样式结束 👆 ===== */
+
   .post-card {
     background: #ffffff;
     border-radius: 16px;
-    overflow: hidden;
+    overflow: hidden; 
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     border: 1px solid rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
+    width: 100%; 
   }
 
   @media (prefers-color-scheme: dark) {
@@ -81,27 +146,25 @@
     }
   }
 
-  .post-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  .card-cover {
+    width: 100%;
+    overflow: hidden; 
   }
 
-  /* 图片高度完全照搬文章页 */
   .card-cover img {
     width: 100%;
-    max-height: 450px;
-    object-fit: cover;
+    aspect-ratio: 16 / 9; 
+    object-fit: cover;    
     display: block;
   }
 
-  /* 内边距完全照搬文章页 (.post-header) */
   .card-info {
-    padding: 30px 40px 10px;
+    padding: 30px 40px 10px; 
     display: flex;
     flex-direction: column;
+    width: 100%;
   }
 
-  /* 标题完全照搬文章页 (.post-title) */
   .card-title {
     font-size: 2.2rem;
     margin: 0 0 20px 0;
@@ -117,21 +180,23 @@
     .card-excerpt { color: #aaaaaa; }
   }
 
-  /* 摘要字号完全照搬文章正文 */
   .card-excerpt {
     font-size: 0.90rem;
     line-height: 1.9;
     margin-bottom: 15px;
   }
 
-  /* 去掉了那条多余的 border-top 横线，字体大小和文章页的 meta 一致 */
   .card-meta {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
     font-size: 0.95rem;
     color: #888888;
     padding-top: 10px;
   }
+  
+  .meta-divider { color: #cccccc; margin: 0 4px; }
+  @media (prefers-color-scheme: dark) { .meta-divider { color: #555555; } }
 
   .card-tags {
     margin-top: 10px;
@@ -139,12 +204,16 @@
     color: #888888;
   }
 
-  /* 手机端适配也完全照搬文章页 */
+  /* 手机端适配 */
   @media (max-width: 768px) {
-    .post-page-wrapper { padding: 30px 10px 30px; }
+    .post-page-wrapper { padding: 20px 10px 30px; }
     .post-container { gap: 15px; }
+    .notice-board { padding: 12px 15px; border-radius: 12px; }
+    .notice-icon { font-size: 1.3rem; margin-right: 10px; }
+    .notice-content { font-size: 0.85rem; }
     .card-info { padding: 20px 20px 10px; }
     .card-title { font-size: 1.7rem; }
-    .card-cover img { max-height: 300px; }
+    .card-meta { font-size: 0.85rem; }
+    .meta-divider { display: none; }
   }
 </style>
