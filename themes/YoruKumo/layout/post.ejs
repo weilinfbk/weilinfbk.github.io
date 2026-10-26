@@ -14,12 +14,8 @@
         <h1 class="post-title"><%= page.title %></h1>
         
         <div class="post-meta">
-          <span>📅 发表于 <%= date(page.date, 'YYYY-MM-DD') %></span>
-          
-          <% if (page.updated && page.updated != page.date) { %>
-            <span class="meta-divider">|</span>
-            <span>🕒 更新于 <%= date(page.updated, 'YYYY-MM-DD') %></span>
-          <% } %>
+          <!-- 显示具体时间 -->
+          <span>📅 发表于 <%= date(page.date, 'YYYY-MM-DD HH:mm') %></span>
           
           <% if (page.categories && page.categories.length) { %>
             <span class="meta-divider">|</span>
@@ -43,30 +39,29 @@
   </main>
 </div>
 
-<!-- 完美还原图一的暗黑卡片样式 -->
+<!-- 样式部分 -->
 <style>
-  /* 强制页面背景变为深色 */
+  /* 页面背景变深色 */
   body {
     background-color: #121212 !important; 
   }
-  
-  /* 隐藏掉主页自带的顶部大头图和导航栏，让文章页纯净 */
-  header, .swiper {
-    display: none !important; 
-  }
 
-  /* 外层容器 */
+  /* ⚠️ 注意：这里把之前强制隐藏 header 的代码删掉了，所以 Weilin Blog 会回来！ */
+
+  /* 外层容器，加上一点顶部负边距，让卡片稍微往上提一点，不跟导航栏离得太远 */
   .post-page-wrapper {
-    padding: 40px 20px;
+    padding: 20px 20px 40px;
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    background-color: #121212;
   }
 
   .post-container {
     width: 100%;
     max-width: 850px;
+    margin-top: -40px; /* 让卡片往上浮动一点 */
+    position: relative;
+    z-index: 10;
   }
 
   /* 暗黑卡片主体 */
@@ -74,7 +69,7 @@
     background-color: #1e1e1e;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     border: 1px solid rgba(255,255,255,0.05);
   }
 
@@ -86,7 +81,7 @@
     display: block;
   }
 
-  /* 头部区域（标题和元数据） */
+  /* 头部区域 */
   .post-header {
     padding: 35px 40px 10px;
   }
@@ -100,7 +95,7 @@
     margin: 0 0 20px 0;
   }
 
-  /* 元信息排版（带分割线） */
+  /* 元信息排版 */
   .post-meta {
     display: flex;
     flex-wrap: wrap;
@@ -125,7 +120,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* 优化正文里的链接和粗体颜色 */
   .post-content a { color: #66b2ff; text-decoration: none; }
   .post-content strong { color: #ffffff; }
   .post-content img { max-width: 100%; border-radius: 8px; margin: 15px 0; }
@@ -133,7 +127,10 @@
   /* 📱 手机端适配 */
   @media (max-width: 768px) {
     .post-page-wrapper {
-      padding: 15px 10px;
+      padding: 10px;
+    }
+    .post-container {
+      margin-top: -20px; /* 手机上上浮少一点 */
     }
     .post-header {
       padding: 20px 20px 10px;
@@ -148,7 +145,7 @@
       font-size: 0.85rem;
     }
     .meta-divider {
-      display: none; /* 手机屏幕窄，隐藏竖线防止换行太乱 */
+      display: none; /* 手机屏幕窄，隐藏竖线 */
     }
   }
 </style>
