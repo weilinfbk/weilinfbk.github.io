@@ -1,18 +1,19 @@
 <%- partial('_partial/header') %>
 
-<!-- 页面内容（单列宽卡片版） -->
-<div class="page-content">
-  <div class="card-list">
+<!-- 直接使用和文章页一模一样的外层容器，保证大小完全一致 -->
+<div class="post-page-wrapper">
+  <main class="post-container">
+    
     <% page.posts.each(function(post) { %>
       <article class="post-card">
-        <!-- 封面图部分 -->
+        <!-- 封面图 -->
         <div class="card-cover">
           <a href="<%- url_for(post.path) %>">
             <img src="<%- post.cover || post.top_img || '/images/avatar.jpg' %>" alt="<%= post.title %>">
           </a>
         </div>
         
-        <!-- 文字信息部分 -->
+        <!-- 文字信息 -->
         <div class="card-info">
           <h2 class="card-title">
             <a href="<%- url_for(post.path) %>"><%= post.title || '(无标题)' %></a>
@@ -30,7 +31,7 @@
             <% } %>
           </div>
 
-          <!-- 新增：日期下方的 Tags -->
+          <!-- Tags -->
           <% if (post.tags && post.tags.length) { %>
             <div class="card-tags">
               🏷️ 
@@ -42,22 +43,27 @@
         </div>
       </article>
     <% }) %>
-  </div>
+
+  </main>
 </div>
 
 <style>
-  /* 彻底放弃网格，改用最安全的单列铺满布局 */
-  .card-list {
+  /* ⚠️ 这里的容器样式，完全是照抄 post.ejs 的，保证两边严丝合缝 */
+  .post-page-wrapper {
+    padding: 40px 20px 60px; 
     display: flex;
-    flex-direction: column;
-    gap: 24px; /* 卡片之间的上下间距 */
-    max-width: 850px; /* 跟文章页一样的宽度 */
-    margin: 30px auto; /* 整体居中 */
-    padding: 0 15px;
-    box-sizing: border-box; /* 防止被撑开 */
+    justify-content: center;
   }
 
-  /* 单个卡片 */
+  .post-container {
+    width: 100%;
+    max-width: 850px; /* 文章页也是 850px */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 卡片之间的缝隙 */
+  }
+
+  /* 单个卡片的基础样式 */
   .post-card {
     background: #ffffff;
     border-radius: 16px;
@@ -65,10 +71,11 @@
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     border: 1px solid rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%; /* 占满整行 */
+    display: flex;
+    flex-direction: column;
   }
 
-  /* 暗色模式自适应 */
+  /* 暗色模式 */
   @media (prefers-color-scheme: dark) {
     .post-card {
       background: #1e1e1e;
@@ -82,7 +89,6 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   }
 
-  /* 封面图 */
   .card-cover img {
     width: 100%;
     height: 220px;
@@ -90,7 +96,6 @@
     display: block;
   }
 
-  /* 文字区域 */
   .card-info {
     padding: 24px;
     display: flex;
@@ -104,9 +109,9 @@
     font-weight: 700;
   }
 
-  /* 标题和摘要亮色/暗色自适应 */
   .card-title a { text-decoration: none; color: #222222; }
   .card-excerpt { color: #666666; }
+  
   @media (prefers-color-scheme: dark) {
     .card-title a { color: #ffffff; }
     .card-excerpt { color: #aaaaaa; }
@@ -118,7 +123,6 @@
     margin-bottom: 20px;
   }
 
-  /* 底部日期和分类 */
   .card-meta {
     display: flex;
     justify-content: space-between;
@@ -128,27 +132,18 @@
     padding-top: 15px;
   }
 
-  /* Tags 的样式 */
   .card-tags {
     margin-top: 10px;
     font-size: 0.85rem;
     color: #888888;
   }
 
-  /* 手机端适配（缩小一点留白） */
+  /* 手机端适配 */
   @media (max-width: 768px) {
-    .card-list {
-      padding: 0 10px;
-      gap: 15px;
-    }
-    .card-info {
-      padding: 20px;
-    }
-    .card-title {
-      font-size: 1.2rem;
-    }
-    .card-cover img {
-      height: 180px;
-    }
+    .post-page-wrapper { padding: 30px 10px 30px; }
+    .post-container { gap: 15px; }
+    .card-info { padding: 20px; }
+    .card-title { font-size: 1.2rem; }
+    .card-cover img { height: 180px; }
   }
 </style>
