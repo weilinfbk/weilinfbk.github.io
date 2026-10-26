@@ -1,8 +1,8 @@
 <%- partial('_partial/header') %>
 
-<!-- 页面内容（网格卡片版） -->
+<!-- 页面内容（单列宽卡片版） -->
 <div class="page-content">
-  <div class="card-grid">
+  <div class="card-list">
     <% page.posts.each(function(post) { %>
       <article class="post-card">
         <!-- 封面图部分 -->
@@ -24,7 +24,6 @@
           
           <!-- 日期和分类 -->
           <div class="card-meta">
-            <!-- 这里加了 HH:mm 显示时间 -->
             <span class="card-date">📅 <%= date(post.date, 'YYYY-MM-DD HH:mm') %></span>
             <% if (post.categories && post.categories.length) { %>
               <span class="card-category">📁 <%= post.categories.data[0].name %></span>
@@ -47,14 +46,15 @@
 </div>
 
 <style>
-  /* 网格容器 */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
-    max-width: 850px;
-    margin: 30px auto;
+  /* 彻底放弃网格，改用最安全的单列铺满布局 */
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* 卡片之间的上下间距 */
+    max-width: 850px; /* 跟文章页一样的宽度 */
+    margin: 30px auto; /* 整体居中 */
     padding: 0 15px;
+    box-sizing: border-box; /* 防止被撑开 */
   }
 
   /* 单个卡片 */
@@ -65,10 +65,10 @@
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     border: 1px solid rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
+    width: 100%; /* 占满整行 */
   }
 
+  /* 暗色模式自适应 */
   @media (prefers-color-scheme: dark) {
     .post-card {
       background: #1e1e1e;
@@ -85,7 +85,7 @@
   /* 封面图 */
   .card-cover img {
     width: 100%;
-    height: 200px;
+    height: 220px;
     object-fit: cover;
     display: block;
   }
@@ -95,11 +95,10 @@
     padding: 24px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
   }
 
   .card-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin: 0 0 12px 0;
     line-height: 1.5;
     font-weight: 700;
@@ -117,7 +116,6 @@
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 20px;
-    flex-grow: 1;
   }
 
   /* 底部日期和分类 */
@@ -130,10 +128,27 @@
     padding-top: 15px;
   }
 
-  /* 新增：Tags 的样式 */
+  /* Tags 的样式 */
   .card-tags {
     margin-top: 10px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #888888;
+  }
+
+  /* 手机端适配（缩小一点留白） */
+  @media (max-width: 768px) {
+    .card-list {
+      padding: 0 10px;
+      gap: 15px;
+    }
+    .card-info {
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 1.2rem;
+    }
+    .card-cover img {
+      height: 180px;
+    }
   }
 </style>
