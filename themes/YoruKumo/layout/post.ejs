@@ -2,61 +2,64 @@
 
 <div class="post-page-wrapper">
   <main class="post-container">
-    <article class="post-card">
-      
-      <!-- 1. 顶部封面图 -->
+    
+    <!-- 第一个卡片：封面图 + 标题 + 信息 -->
+    <article class="post-card top-card">
       <% if (page.cover || page.top_img) { %>
         <div class="post-cover">
           <img src="<%- page.cover || page.top_img %>" alt="<%= page.title %>">
         </div>
       <% } %>
 
-      <!-- 2. 标题和元信息 -->
       <div class="post-header">
         <h1 class="post-title"><%= page.title %></h1>
         
         <div class="post-meta">
           <span>📅 发表于 <%= date(page.date, 'YYYY-MM-DD HH:mm') %></span>
-          
           <% if (page.categories && page.categories.length) { %>
             <span class="meta-divider">|</span>
             <span>📁 <%= page.categories.data[0].name %></span>
           <% } %>
-          
           <span class="meta-divider">|</span>
           <span>📝 字数: <%= wordcount(page.content) %></span>
-          
           <span class="meta-divider">|</span>
           <span>⏱️ 阅读: <%= min2read(page.content) %> 分钟</span>
         </div>
       </div>
+    </article>
 
-      <!-- 3. 正文内容 -->
+    <!-- 第二个卡片：正文内容 -->
+    <article class="post-card content-card">
       <div class="post-content">
         <%- page.content %>
       </div>
-
     </article>
+
   </main>
 </div>
 
 <style>
+  /* 隐藏多余的头部 */
+  .swiper, .banner, .post-page > header, body > header { display: none !important; }
+  body { padding-top: 80px !important; background-color: #f5f5f5 !important; }
+  @media (prefers-color-scheme: dark) { body { background-color: #121212 !important; } }
+
   .post-page-wrapper {
-    padding: 30px 20px 40px !important;
+    padding: 20px 20px 60px;
     display: flex;
     justify-content: center;
-    min-height: 100vh;
   }
 
+  /* 关键点：用 flex 布局，让两个卡片中间产生缝隙 */
   .post-container {
     width: 100%;
     max-width: 850px;
-    margin-top: 0px !important; 
-    position: relative;
-    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 👈 这就是上下两个卡片的间距 */
   }
 
-  /* 默认亮色模式下的卡片 */
+  /* 卡片基础样式 */
   .post-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -64,135 +67,65 @@
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     border: 1px solid rgba(0,0,0,0.05);
   }
-  .post-title { color: #222222; }
-  .post-meta { color: #666666; }
-  .post-content { color: #333333; }
-  .meta-divider { color: #cccccc; margin: 0 4px; }
 
-  /* 暗色模式自适应 */
+  /* 暗色模式卡片 */
   @media (prefers-color-scheme: dark) {
     .post-card {
-      background-color: rgba(30, 30, 30, 0.95);
+      background-color: #1e1e1e;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       border: 1px solid rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
     }
-    .post-title { color: #ffffff; }
-    .post-meta { color: #aaaaaa; }
-    .post-content { color: #d4d4d4; }
-    .meta-divider { color: #555555; }
   }
 
-  /* 通用样式 */
+  /* 顶部卡片：让图片和标题自然贴合 */
+  .top-card {
+    padding-bottom: 10px;
+  }
   .post-cover img {
     width: 100%;
     max-height: 450px;
     object-fit: cover;
     display: block;
   }
-
   .post-header { padding: 35px 40px 10px; }
+  .post-title { font-size: 2.2rem; font-weight: 700; line-height: 1.4; margin: 0 0 20px 0; color: #222; }
+  .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; color: #666; }
+  .meta-divider { color: #ccc; margin: 0 4px; }
 
-  .post-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-    line-height: 1.4;
-    margin: 0 0 20px 0;
+  /* 底部卡片：正文区域 */
+  .content-card {
+    padding: 40px; /* 整个卡片四周留白 */
+  }
+  .post-content {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    letter-spacing: 0.5px;
+    color: #333;
   }
 
-  .post-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-    margin-bottom: 15px;
+  /* 正文里的元素美化 */
+  .post-content h2 { font-size: 1.6rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(128,128,128,0.2); padding-bottom: 8px; }
+  .post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
+  .post-content pre { background: #1a1a1a !important; padding: 16px; border-radius: 12px; overflow-x: auto; }
+  .post-content code { font-family: monospace; }
+  
+  /* 暗色模式下的文字 */
+  @media (prefers-color-scheme: dark) {
+    .post-title { color: #ffffff; }
+    .post-meta { color: #aaaaaa; }
+    .meta-divider { color: #555555; }
+    .post-content { color: #d4d4d4; }
   }
 
-/* 正文区域整体 */
-.post-content {
-  padding: 15px 40px 40px;
-  font-size: 1.05rem;
-  line-height: 1.9;
-  letter-spacing: 0.5px;
-}
-
-/* 1. 美化正文里的大标题 (对应 Markdown 的 ##) */
-.post-content h2 {
-  font-size: 1.6rem;
-  color: inherit;
-  margin: 2.5rem 0 1rem 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-  font-weight: 700;
-}
-
-/* 2. 美化正文里的副标题 (对应 Markdown 的 ###) */
-.post-content h3 {
-  font-size: 1.3rem;
-  color: inherit;
-  margin: 2rem 0 1rem 0;
-  font-weight: 600;
-}
-
-/* 3. 优化段落间距 */
-.post-content p {
-  margin-bottom: 1.5rem;
-}
-
-/* 4. 美化图片（加圆角和阴影） */
-.post-content img {
-  max-width: 100%;
-  border-radius: 12px; /* 大圆角，跟卡片一样 */
-  margin: 1.5rem 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* 5. 美化代码块（对应 Markdown 的三个反引号 ```） */
-.post-content pre {
-  background-color: #1a1a1a !important; /* 深色背景 */
-  border-radius: 12px;
-  padding: 16px;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.post-content code {
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 0.9rem;
-}
-
-/* 行内代码的样式 (像这样：`code`) */
-.post-content p code, .post-content li code {
-  background-color: rgba(128, 128, 128, 0.15);
-  padding: 3px 6px;
-  border-radius: 4px;
-  font-size: 0.85em;
-  color: #e06c75; 
-}
-
-/* 6. 美化引用块 (对应 Markdown 的 >) */
-.post-content blockquote {
-  border-left: 4px solid #3b7bbf;
-  background-color: rgba(59, 123, 191, 0.1);
-  padding: 10px 20px;
-  margin: 1.5rem 0;
-  border-radius: 0 8px 8px 0;
-  color: #888;
-}
-
-  .post-content a { color: #66b2ff; text-decoration: none; }
-  .post-content strong { color: inherit; }
-  .post-content img { max-width: 100%; border-radius: 8px; margin: 15px 0; }
-
+  /* 手机端适配 */
   @media (max-width: 768px) {
-    .post-page-wrapper { padding: 10px 10px 20px; }
-    .post-container { margin-top: -40px; }
+    body { padding-top: 60px !important; }
+    .post-page-wrapper { padding: 10px 10px 30px; }
+    .post-container { gap: 15px; }
     .post-header { padding: 20px 20px 10px; }
-    .post-content { padding: 10px 20px 30px; }
     .post-title { font-size: 1.7rem; }
     .post-meta { font-size: 0.85rem; }
     .meta-divider { display: none; }
+    .content-card { padding: 20px; }
   }
 </style>
