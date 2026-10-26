@@ -3,9 +3,7 @@
 <div class="post-page-wrapper">
   <main class="post-container">
     
-    <!-- ========================================== -->
-    <!-- 👇👇👇 在这里修改你的通告内容 👇👇👇 -->
-    <!-- ========================================== -->
+    <!-- 通告栏 -->
     <div class="notice-board">
       <div class="notice-icon">📢</div>
       <div class="notice-content">
@@ -13,20 +11,20 @@
         Welcome to my blog! Latest update: The site got a fresh new look!
       </div>
     </div>
-    <!-- ========================================== -->
-    <!-- 👆👆👆 通告修改结束 👆👆👆 -->
-    <!-- ========================================== -->
 
     <% page.posts.each(function(post) { %>
       <article class="post-card">
-        <!-- 1. 封面图 -->
-        <div class="card-cover">
-          <a href="<%- url_for(post.path) %>">
-            <img src="<%- post.cover || post.top_img || '/images/avatar.jpg' %>" alt="<%= post.title %>">
-          </a>
-        </div>
         
-        <!-- 2. 文字信息 -->
+        <!-- ⚠️ 核心修改点：只有文章有 cover 或 top_img 时才显示图片 -->
+        <% if (post.cover || post.top_img) { %>
+          <div class="card-cover">
+            <a href="<%- url_for(post.path) %>">
+              <img src="<%- post.cover || post.top_img %>" alt="<%= post.title %>">
+            </a>
+          </div>
+        <% } %>
+        
+        <!-- 文字信息 -->
         <div class="card-info">
           <h2 class="card-title">
             <a href="<%- url_for(post.path) %>"><%= post.title || '(无标题)' %></a>
@@ -60,7 +58,7 @@
 </div>
 
 <style>
-  /* ===== 排版基础样式（完全没动） ===== */
+  /* 之前的排版基础样式，完全没动 */
   .post-page-wrapper, .post-container, .post-card, .card-cover, .card-info, .notice-board {
     box-sizing: border-box;
   }
@@ -81,7 +79,7 @@
     gap: 20px; 
   }
 
-  /* ===== 👇 新增：通告框的样式 👇 ===== */
+  /* 通告框样式 */
   .notice-board {
     display: flex;
     align-items: center;
@@ -90,44 +88,21 @@
     padding: 16px 20px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     border: 1px solid rgba(0,0,0,0.05);
-    border-left: 5px solid #3b7bbf; /* 左侧醒目的蓝色边框 */
+    border-left: 5px solid #3b7bbf;
   }
-  .notice-icon {
-    font-size: 1.6rem;
-    margin-right: 15px;
-    animation: ring 2s infinite; /* 小铃铛动画 */
-  }
-  .notice-content {
-    font-size: 0.95rem;
-    color: #444444;
-    line-height: 1.6;
-    flex: 1;
-  }
+  .notice-icon { font-size: 1.6rem; margin-right: 15px; animation: ring 2s infinite; }
+  .notice-content { font-size: 0.95rem; color: #444444; line-height: 1.6; flex: 1; }
   
   @keyframes ring {
-    0% { transform: rotate(0); }
-    10% { transform: rotate(15deg); }
-    20% { transform: rotate(-10deg); }
-    30% { transform: rotate(5deg); }
-    40% { transform: rotate(-5deg); }
-    50% { transform: rotate(0); }
-    100% { transform: rotate(0); }
+    0% { transform: rotate(0); } 10% { transform: rotate(15deg); } 20% { transform: rotate(-10deg); } 30% { transform: rotate(5deg); } 40% { transform: rotate(-5deg); } 50% { transform: rotate(0); } 100% { transform: rotate(0); }
   }
 
-  /* 通告框暗色模式 */
   @media (prefers-color-scheme: dark) {
-    .notice-board {
-      background: #1e1e1e;
-      border: 1px solid rgba(255,255,255,0.05);
-      border-left: 5px solid #66b2ff; /* 暗色下用亮蓝色 */
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .notice-content {
-      color: #d4d4d4;
-    }
+    .notice-board { background: #1e1e1e; border: 1px solid rgba(255,255,255,0.05); border-left: 5px solid #66b2ff; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .notice-content { color: #d4d4d4; }
   }
-  /* ===== 👆 通告框样式结束 👆 ===== */
 
+  /* 卡片主体 */
   .post-card {
     background: #ffffff;
     border-radius: 16px;
@@ -152,6 +127,7 @@
     overflow: hidden; 
   }
 
+  /* 图片比例依然锁死 16:9 */
   .card-cover img {
     width: 100%;
     aspect-ratio: 16 / 9; 
@@ -205,7 +181,7 @@
     color: #888888;
   }
 
-  /* 手机端适配 */
+  /* 手机端 */
   @media (max-width: 768px) {
     .post-page-wrapper { padding: 20px 10px 30px; }
     .post-container { gap: 15px; }
