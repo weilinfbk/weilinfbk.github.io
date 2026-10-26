@@ -3,7 +3,7 @@
 <div class="post-page-wrapper">
   <main class="post-container">
     
-    <!-- 第一个卡片：封面图 + 标题 + 信息 -->
+    <!-- 卡片1：封面 + 标题 + 元信息 -->
     <article class="post-card top-card">
       <% if (page.cover || page.top_img) { %>
         <div class="post-cover">
@@ -28,7 +28,7 @@
       </div>
     </article>
 
-    <!-- 第二个卡片：正文内容 -->
+    <!-- 卡片2：正文内容 -->
     <article class="post-card content-card">
       <div class="post-content">
         <%- page.content %>
@@ -39,27 +39,39 @@
 </div>
 
 <style>
-  /* 隐藏多余的头部 */
-  .swiper, .banner, .post-page > header, body > header { display: none !important; }
-  body { padding-top: 80px !important; background-color: #f5f5f5 !important; }
-  @media (prefers-color-scheme: dark) { body { background-color: #121212 !important; } }
+  /* 暴力干掉主题自带的顶部大图（白发剑士图） */
+  .swiper, .header-bg, #banner, .swiper-container, .page-header {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 
+  /* 恢复正常的页面背景（亮色/暗色自适应） */
+  body {
+    background-color: #f5f5f5 !important;
+    padding-top: 70px !important; /* 给顶部导航栏留空间 */
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background-color: #121212 !important; }
+  }
+
+  /* 容器，控制卡片之间的缝隙 */
   .post-page-wrapper {
-    padding: 20px 20px 60px;
+    padding: 20px;
     display: flex;
     justify-content: center;
   }
 
-  /* 关键点：用 flex 布局，让两个卡片中间产生缝隙 */
   .post-container {
     width: 100%;
     max-width: 850px;
     display: flex;
     flex-direction: column;
-    gap: 20px; /* 👈 这就是上下两个卡片的间距 */
+    gap: 20px; /* 👈 两个卡片分开的关键 */
   }
 
-  /* 卡片基础样式 */
+  /* 卡片通用样式 */
   .post-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -77,25 +89,20 @@
     }
   }
 
-  /* 顶部卡片：让图片和标题自然贴合 */
-  .top-card {
-    padding-bottom: 10px;
-  }
+  /* --- 卡片1：头部 --- */
   .post-cover img {
     width: 100%;
     max-height: 450px;
     object-fit: cover;
     display: block;
   }
-  .post-header { padding: 35px 40px 10px; }
+  .post-header { padding: 30px 40px; }
   .post-title { font-size: 2.2rem; font-weight: 700; line-height: 1.4; margin: 0 0 20px 0; color: #222; }
   .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; color: #666; }
   .meta-divider { color: #ccc; margin: 0 4px; }
 
-  /* 底部卡片：正文区域 */
-  .content-card {
-    padding: 40px; /* 整个卡片四周留白 */
-  }
+  /* --- 卡片2：正文 --- */
+  .content-card { padding: 40px; }
   .post-content {
     font-size: 1.05rem;
     line-height: 1.9;
@@ -103,11 +110,10 @@
     color: #333;
   }
 
-  /* 正文里的元素美化 */
+  /* 正文美化 */
   .post-content h2 { font-size: 1.6rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(128,128,128,0.2); padding-bottom: 8px; }
   .post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
   .post-content pre { background: #1a1a1a !important; padding: 16px; border-radius: 12px; overflow-x: auto; }
-  .post-content code { font-family: monospace; }
   
   /* 暗色模式下的文字 */
   @media (prefers-color-scheme: dark) {
@@ -120,12 +126,11 @@
   /* 手机端适配 */
   @media (max-width: 768px) {
     body { padding-top: 60px !important; }
-    .post-page-wrapper { padding: 10px 10px 30px; }
+    .post-page-wrapper { padding: 10px; }
     .post-container { gap: 15px; }
-    .post-header { padding: 20px 20px 10px; }
-    .post-title { font-size: 1.7rem; }
-    .post-meta { font-size: 0.85rem; }
-    .meta-divider { display: none; }
+    .post-header { padding: 20px; }
     .content-card { padding: 20px; }
+    .post-title { font-size: 1.7rem; }
+    .meta-divider { display: none; }
   }
 </style>
