@@ -2,6 +2,7 @@
 title: NFS2网页版
 date: 2026-10-26 06:29:35
 tags: 网页游戏 游戏 
+cover: https://imgur.com/lHErqWh.jpg
 ---
 # NFS2网页版
 ##### https://nfsu2.xyz
