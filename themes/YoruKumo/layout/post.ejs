@@ -109,12 +109,78 @@
     margin-bottom: 15px;
   }
 
-  .post-content {
-    padding: 15px 40px 40px;
-    font-size: 1.05rem;
-    line-height: 1.9;
-    letter-spacing: 0.5px;
-  }
+/* 正文区域整体 */
+.post-content {
+  padding: 15px 40px 40px;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  letter-spacing: 0.5px;
+}
+
+/* 1. 美化正文里的大标题 (对应 Markdown 的 ##) */
+.post-content h2 {
+  font-size: 1.6rem;
+  color: inherit;
+  margin: 2.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  font-weight: 700;
+}
+
+/* 2. 美化正文里的副标题 (对应 Markdown 的 ###) */
+.post-content h3 {
+  font-size: 1.3rem;
+  color: inherit;
+  margin: 2rem 0 1rem 0;
+  font-weight: 600;
+}
+
+/* 3. 优化段落间距 */
+.post-content p {
+  margin-bottom: 1.5rem;
+}
+
+/* 4. 美化图片（加圆角和阴影） */
+.post-content img {
+  max-width: 100%;
+  border-radius: 12px; /* 大圆角，跟卡片一样 */
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* 5. 美化代码块（对应 Markdown 的三个反引号 ```） */
+.post-content pre {
+  background-color: #1a1a1a !important; /* 深色背景 */
+  border-radius: 12px;
+  padding: 16px;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.post-content code {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9rem;
+}
+
+/* 行内代码的样式 (像这样：`code`) */
+.post-content p code, .post-content li code {
+  background-color: rgba(128, 128, 128, 0.15);
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: #e06c75; 
+}
+
+/* 6. 美化引用块 (对应 Markdown 的 >) */
+.post-content blockquote {
+  border-left: 4px solid #3b7bbf;
+  background-color: rgba(59, 123, 191, 0.1);
+  padding: 10px 20px;
+  margin: 1.5rem 0;
+  border-radius: 0 8px 8px 0;
+  color: #888;
+}
 
   .post-content a { color: #66b2ff; text-decoration: none; }
   .post-content strong { color: inherit; }
