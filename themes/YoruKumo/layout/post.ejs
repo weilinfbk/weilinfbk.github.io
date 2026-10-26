@@ -110,9 +110,12 @@
   .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; margin-bottom: 10px; }
 
   .content-card { padding: 40px; }
-  .post-content { font-size: 1.05rem; line-height: 1.9; letter-spacing: 0.5px; }
+  .post-content { font-size: 0.90rem; line-height: 1.9; letter-spacing: 0.5px; }
   .post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
   .post-content pre { background: #1a1a1a !important; padding: 16px; border-radius: 12px; overflow-x: auto; }
+/* 强制给正文的每个段落底部留出空隙 */
+.post-content p {
+  margin-bottom: 1.5rem !important; }
 
   /* 底部导航卡片 */
   .post-navigation { display: flex; flex-direction: column; gap: 15px; }
