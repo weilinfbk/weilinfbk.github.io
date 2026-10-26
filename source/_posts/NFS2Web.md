@@ -4,12 +4,6 @@ date: 2026-10-26 06:29:35
 tags: 网页游戏 游戏 
 cover: https://imgur.com/lHErqWh.jpg
 ---
-# NFS2网页版
-##### https://nfsu2.xyz
-
-![描述](https://imgur.com/lHErqWh.jpg)
-
-
 最近发现了一个很有意思的项目：nfsu2.xyz。它把 2004 年的经典赛车游戏 《极品飞车：地下狂飙2》（Need for Speed: Underground 2） 搬进了浏览器，打开网页就能玩，不用下载安装。
 
 需要先说明：这是一个粉丝自制项目，不是 EA 官方产品。它通过技术手段把原版游戏重新编译到网页端运行，游戏版权仍然属于 EA。大家体验时最好把它当作一个怀旧向的民间项目来看待。
