@@ -32,69 +32,6 @@
   <% var inactiveTitle = __('inactiveTitle'); %>
 
   <title><%= activeTitle %></title>
-
-  <!-- 语言自动检测：首次访问跟随手机系统，手动选择后优先用户选择 -->
-  <script>
-  (function () {
-    var ROOT = '<%= config.root %>'; // 例如 "/" 或 "/blog/"
-    var LANGS = ['zh', 'en', 'jp'];
-    var SAVED_KEY = 'preferred_language';
-
-    // 从当前路径提取语言：/zh/... -> zh
-    function getPathLang() {
-      var path = location.pathname;
-      if (ROOT !== '/' && path.indexOf(ROOT) === 0) {
-        path = path.slice(ROOT.length - 1);
-        if (path.charAt(0) !== '/') path = '/' + path;
-      }
-      var m = path.match(/^\/(zh|en|jp)(\/|$)/);
-      return m ? m[1] : null;
-    }
-
-    // 手机系统语言映射：中文->zh，日文->jp，其他->en
-    function getBrowserLang() {
-      var lang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-      if (lang.indexOf('zh') === 0) return 'zh';
-      if (lang.indexOf('ja') === 0) return 'jp';
-      return 'en';
-    }
-
-    // 生成目标语言路径，尽量保留原路径后缀
-    function buildLangPath(targetLang) {
-      var path = location.pathname;
-      var pathLang = getPathLang();
-      if (pathLang) {
-        var rest = path.replace(new RegExp('^' + ROOT + '(zh|en|jp)'), '');
-        return ROOT + targetLang + rest;
-      }
-      return ROOT + targetLang + '/';
-    }
-
-    var pathLang = getPathLang();
-    var saved = null;
-    try {
-      saved = localStorage.getItem(SAVED_KEY);
-    } catch (e) {}
-
-    var targetLang;
-    if (saved && LANGS.indexOf(saved) !== -1) {
-      targetLang = saved; // 用户手动选过语言，优先尊重
-    } else {
-      targetLang = getBrowserLang(); // 首次访问跟随手机系统
-    }
-
-    // 当前不在任何语言目录下，或当前语言与目标不同，就跳转
-    if (!pathLang || pathLang !== targetLang) {
-      location.replace(buildLangPath(targetLang) + location.search + location.hash);
-    }
-  })();
-  </script>
-
-  <!-- 告诉搜索引擎三套语言页面的关系 -->
-  <link rel="alternate" hreflang="zh" href="<%= config.url %><%= config.root %>zh/" />
-  <link rel="alternate" hreflang="en" href="<%= config.url %><%= config.root %>en/" />
-  <link rel="alternate" hreflang="ja" href="<%= config.url %><%= config.root %>jp/" />
-
   <!-- 注入配置到全局变量 -->
   <script>
     window.SITE_CONFIG = {
