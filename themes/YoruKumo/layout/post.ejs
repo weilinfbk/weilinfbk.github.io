@@ -1,4 +1,5 @@
-<!-- 去掉顶部大图，直接从文章开始 -->
+<!-- 1. 只保留这一行，找回头部的透明导航栏 -->
+<%- partial('_partial/header') %>
 
 <div class="post-page-wrapper">
   <main class="post-container">
@@ -34,7 +35,7 @@
       </div>
     </article>
 
-    <!-- 卡片3：上一篇 / 下一篇（带大图） -->
+    <!-- 卡片3：上一篇 / 下一篇 -->
     <div class="post-navigation">
       <% if (page.prev) { %>
         <a href="<%- url_for(page.prev.path) %>" class="nav-card" style="background-image: url('<%- page.prev.cover || page.prev.top_img || '/images/avatar.jpg' %>');">
@@ -59,18 +60,16 @@
 </div>
 
 <style>
-  /* 保证顶部不被刘海挡住 */
-  body {
-    padding-top: 20px !important; 
-  }
+  /* ⚠️ 彻底删光了之前关于 body 背景、隐藏大图的乱改代码，只留以下内容 */
 
+  /* 把卡片往下推一点，不要贴着大图 */
   .post-page-wrapper {
-    padding: 10px 20px 60px; 
+    padding: 40px 20px 60px; 
     display: flex;
     justify-content: center;
   }
 
-  /* 卡片间距 */
+  /* 控制卡片分开的缝隙 */
   .post-container {
     width: 100%;
     max-width: 850px;
@@ -79,7 +78,7 @@
     gap: 20px; 
   }
 
-  /* 亮色模式卡片 */
+  /* 卡片亮色模式 */
   .post-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -92,7 +91,7 @@
   .post-content { color: #333333; }
   .meta-divider { color: #cccccc; margin: 0 4px; }
 
-  /* 暗色模式卡片 */
+  /* 卡片暗色模式 */
   @media (prefers-color-scheme: dark) {
     .post-card {
       background-color: #1e1e1e;
@@ -105,13 +104,11 @@
     .meta-divider { color: #555555; }
   }
 
-  /* 文章封面和标题 */
   .post-cover img { width: 100%; max-height: 450px; object-fit: cover; display: block; }
   .post-header { padding: 30px 40px 10px; }
   .post-title { font-size: 2.2rem; font-weight: 700; line-height: 1.4; margin: 0 0 20px 0; }
   .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; margin-bottom: 10px; }
 
-  /* 正文 */
   .content-card { padding: 40px; }
   .post-content { font-size: 1.05rem; line-height: 1.9; letter-spacing: 0.5px; }
   .post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
@@ -134,8 +131,7 @@
 
   /* 手机端适配 */
   @media (max-width: 768px) {
-    body { padding-top: 15px !important; }
-    .post-page-wrapper { padding: 10px 10px 30px; }
+    .post-page-wrapper { padding: 30px 10px 30px; } /* 手机上往下推的距离 */
     .post-container { gap: 15px; }
     .post-header { padding: 20px 20px 10px; }
     .content-card { padding: 20px; }
