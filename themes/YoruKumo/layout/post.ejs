@@ -1,8 +1,10 @@
+<!-- 去掉顶部大图，直接从文章开始 -->
+
 <div class="post-page-wrapper">
   <main class="post-container">
     
     <!-- 卡片1：封面 + 标题 + 元信息 -->
-    <article class="post-card top-card">
+    <article class="post-card">
       <% if (page.cover || page.top_img) { %>
         <div class="post-cover">
           <img src="<%- page.cover || page.top_img %>" alt="<%= page.title %>">
@@ -27,14 +29,13 @@
 
     <!-- 卡片2：正文内容 -->
     <article class="post-card content-card">
-      <div class="post-content" id="article-content">
+      <div class="post-content">
         <%- page.content %>
       </div>
     </article>
 
-    <!-- ================= 新增：底部大图导航 ================= -->
+    <!-- 卡片3：上一篇 / 下一篇（带大图） -->
     <div class="post-navigation">
-      <!-- 上一篇 -->
       <% if (page.prev) { %>
         <a href="<%- url_for(page.prev.path) %>" class="nav-card" style="background-image: url('<%- page.prev.cover || page.prev.top_img || '/images/avatar.jpg' %>');">
           <div class="nav-overlay">
@@ -44,7 +45,6 @@
         </a>
       <% } %>
 
-      <!-- 下一篇 (如果是最新文章，这里自动不显示) -->
       <% if (page.next) { %>
         <a href="<%- url_for(page.next.path) %>" class="nav-card" style="background-image: url('<%- page.next.cover || page.next.top_img || '/images/avatar.jpg' %>');">
           <div class="nav-overlay">
@@ -54,28 +54,23 @@
         </a>
       <% } %>
     </div>
-    <!-- =================================================== -->
 
   </main>
 </div>
 
 <style>
-  /* ================= 原有页面样式 ================= */
+  /* 保证顶部不被刘海挡住 */
   body {
     padding-top: 20px !important; 
-    background-color: #f5f5f5 !important; 
-  }
-  @media (prefers-color-scheme: dark) {
-    body { background-color: #121212 !important; }
   }
 
   .post-page-wrapper {
     padding: 10px 20px 60px; 
     display: flex;
     justify-content: center;
-    min-height: 100vh;
   }
 
+  /* 卡片间距 */
   .post-container {
     width: 100%;
     max-width: 850px;
@@ -84,6 +79,7 @@
     gap: 20px; 
   }
 
+  /* 亮色模式卡片 */
   .post-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -96,72 +92,45 @@
   .post-content { color: #333333; }
   .meta-divider { color: #cccccc; margin: 0 4px; }
 
+  /* 暗色模式卡片 */
   @media (prefers-color-scheme: dark) {
-    .post-card { background-color: #1e1e1e; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
+    .post-card {
+      background-color: #1e1e1e;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
     .post-title { color: #ffffff; }
     .post-meta { color: #aaaaaa; }
     .post-content { color: #d4d4d4; }
     .meta-divider { color: #555555; }
   }
 
+  /* 文章封面和标题 */
   .post-cover img { width: 100%; max-height: 450px; object-fit: cover; display: block; }
   .post-header { padding: 30px 40px 10px; }
   .post-title { font-size: 2.2rem; font-weight: 700; line-height: 1.4; margin: 0 0 20px 0; }
   .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; margin-bottom: 10px; }
+
+  /* 正文 */
   .content-card { padding: 40px; }
   .post-content { font-size: 1.05rem; line-height: 1.9; letter-spacing: 0.5px; }
   .post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
   .post-content pre { background: #1a1a1a !important; padding: 16px; border-radius: 12px; overflow-x: auto; }
 
-  /* ================= 新增：导航卡片样式 ================= */
-  .post-navigation {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* 上一篇和下一篇的间距 */
-    margin-top: 10px;
-  }
-
+  /* 底部导航卡片 */
+  .post-navigation { display: flex; flex-direction: column; gap: 15px; }
   .nav-card {
-    position: relative;
-    display: block;
-    height: 160px;
-    border-radius: 16px;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    text-decoration: none;
+    position: relative; display: block; height: 160px; border-radius: 16px; overflow: hidden;
+    background-size: cover; background-position: center; text-decoration: none;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   }
-
-  /* 黑色渐变遮罩，保证文字清晰可见 */
   .nav-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 20px;
-    transition: background 0.3s ease;
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
   }
-
-  .nav-card:hover .nav-overlay {
-    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 100%);
-  }
-
-  .nav-label {
-    color: #cccccc;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-  }
-
-  .nav-title {
-    color: #ffffff;
-    font-size: 1.2rem;
-    font-weight: 700;
-    line-height: 1.4;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  }
+  .nav-label { color: #cccccc; font-size: 0.9rem; margin-bottom: 5px; }
+  .nav-title { color: #ffffff; font-size: 1.2rem; font-weight: 700; line-height: 1.4; }
 
   /* 手机端适配 */
   @media (max-width: 768px) {
@@ -172,9 +141,6 @@
     .content-card { padding: 20px; }
     .post-title { font-size: 1.7rem; }
     .meta-divider { display: none; }
-    
-    /* 导航卡片手机端高度调整 */
     .nav-card { height: 130px; }
-    .nav-title { font-size: 1.1rem; }
   }
 </style>
