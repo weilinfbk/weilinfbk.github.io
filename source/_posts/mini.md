@@ -2,6 +2,8 @@
 title: Eatcat Key Customized
 date: 2026-10-20 00:00:01
 tags: webgame minigame 
+cover: https://i.imgur.com/2POMl3m.jpeg
+categories: My game
 ---
 **[中文](https://weilinfbk.github.io/2026/10/19/%E5%B0%8F%E6%B8%B8%E6%88%8F/) | [English](https://weilinfbk.github.io/2026/10/19/mini/)**
 
