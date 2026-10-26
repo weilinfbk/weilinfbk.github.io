@@ -1,5 +1,4 @@
-<!-- 头部 -->
-<%- partial('_partial/header',{}, {cache: true}) %>
+<%- partial('_partial/header') %>
 
 <!-- 页面内容（网格卡片版） -->
 <div class="page-content">
@@ -9,7 +8,6 @@
         <!-- 封面图部分 -->
         <div class="card-cover">
           <a href="<%- url_for(post.path) %>">
-            <!-- 如果你在文章开头写了 cover: 图片链接，就会显示。没写就显示默认图 -->
             <img src="<%- post.cover || post.top_img || '/images/avatar.jpg' %>" alt="<%= post.title %>">
           </a>
         </div>
@@ -24,112 +22,118 @@
             <%- strip_html(post.excerpt || post.content).substring(0, 60) %>...
           </p>
           
+          <!-- 日期和分类 -->
           <div class="card-meta">
-            <span class="card-date">📅 <%= date(post.date, 'YYYY-MM-DD') %></span>
+            <!-- 这里加了 HH:mm 显示时间 -->
+            <span class="card-date">📅 <%= date(post.date, 'YYYY-MM-DD HH:mm') %></span>
             <% if (post.categories && post.categories.length) { %>
               <span class="card-category">📁 <%= post.categories.data[0].name %></span>
             <% } %>
           </div>
+
+          <!-- 新增：日期下方的 Tags -->
+          <% if (post.tags && post.tags.length) { %>
+            <div class="card-tags">
+              🏷️ 
+              <% post.tags.each(function(tag, index) { %>
+                <span><%= tag.name %></span><% if (index < post.tags.length - 1) { %>, <% } %>
+              <% }); %>
+            </div>
+          <% } %>
         </div>
       </article>
     <% }) %>
   </div>
-</div>
 </div>
 
 <style>
   /* 网格容器 */
   .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 0 15px;
   }
 
-/* 单个卡片 - 默认亮色模式 */
-.post-card {
-  background: #ffffff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid rgba(0,0,0,0.05);
-}
-
-/* 鼠标悬浮时的浮动效果 */
-.post-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-/* 封面图保持不变，如果你有不需要动 */
-.card-cover img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-}
-
-/* 文字区域保持不变 */
-.card-info {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.card-title {
-  font-size: 1.2rem;
-  margin: 0 0 10px 0;
-  line-height: 1.4;
-}
-
-/* 亮色模式下的标题和文字颜色 */
-.card-title a {
-  text-decoration: none;
-  color: #222222;
-}
-
-.card-excerpt {
-  font-size: 0.9rem;
-  color: #666666;
-  line-height: 1.6;
-  margin-bottom: 16px;
-  flex-grow: 1;
-}
-
-.card-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  color: #888888;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  padding-top: 10px;
-}
-
-/* =========================================
-   暗色模式自适应（手机切到暗色时自动生效）
-   ========================================= */
-@media (prefers-color-scheme: dark) {
+  /* 单个卡片 */
   .post-card {
-    background: #1e1e1e;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.05);
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
   }
+
+  @media (prefers-color-scheme: dark) {
+    .post-card {
+      background: #1e1e1e;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+  }
+
   .post-card:hover {
-    box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   }
-  .card-title a {
-    color: #ffffff;
+
+  /* 封面图 */
+  .card-cover img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
   }
+
+  /* 文字区域 */
+  .card-info {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  /* 标题和摘要亮色/暗色自适应 */
+  .card-title a { text-decoration: none; color: #222222; }
+  .card-excerpt { color: #666666; }
+  @media (prefers-color-scheme: dark) {
+    .card-title a { color: #ffffff; }
+    .card-excerpt { color: #aaaaaa; }
+  }
+
   .card-excerpt {
-    color: #aaaaaa;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    flex-grow: 1;
   }
+
+  /* 底部日期和分类 */
   .card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
     color: #888888;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(128,128,128,0.2);
+    padding-top: 15px;
   }
-}
+
+  /* 新增：Tags 的样式 */
+  .card-tags {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #888888;
+  }
 </style>
