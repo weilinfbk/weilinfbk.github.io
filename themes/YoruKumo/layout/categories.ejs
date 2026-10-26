@@ -1,0 +1,11 @@
+<div class="custom-tag-page">
+  <h1 class="page-title"><%= page.title %></h1>
+  
+  <div class="tag-cloud-container">
+    <% site.categories.each(function(category){ %>
+      <a href="<%- url_for(category.path) %>" class="tag-item">
+        <%= category.name %> <span class="tag-count"><%= category.length %></span>
+      </a>
+    <% }) %>
+  </div>
+</div>

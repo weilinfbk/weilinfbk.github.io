@@ -6,8 +6,6 @@ title: Weilin Blog
 # 菜单 | menu
 menu:
   Home: /
-  Posts: /posts
-  Stats: /stats
   About: /about
 
 # 轮播图 | swiper
@@ -32,7 +30,11 @@ footer:
 # 关于页面配置
 about:
   name: '玮霖Weilin'
-  description: '我是Meowcoco/Hajimi Hobby Store的老板 我是东马Sarawak人 我喜欢打音游和研究关于AI或其他的科技 比较专注于在手机上'
+  description: 'Hi, I’m Weilin. I’m the owner of Meowcoco Artist Booth and Hajimi Hobby Store. My day job is in car maintenance and repair.
+
+This personal blog is where I explain things to myself, record what I learn, and think through interesting experiments and tinkering projects. I’ve also recently started exploring AI and learning about market economics and research.
+
+I’m always happy to learn from others, so feedback, suggestions, and advice are very welcome. Thanks for stopping by!'
   avatar: /images/avatar.jpg
   email: 'weilinxwl@gmail.com'
   wechat: 'weilin123412'

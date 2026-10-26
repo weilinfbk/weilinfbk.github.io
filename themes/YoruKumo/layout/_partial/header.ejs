@@ -1,25 +1,153 @@
-<div id="header-container" class="header-top">
-  <div class="logo">
-    <a href="<%- url_for('/') %>">
-      <% if (theme.logo) { %>
-      <img src="<%- url_for(theme.logo) %>" alt="<%= theme.title %>" />
-      <% } else { %> <%= theme.title %> <% } %>
+<!-- 透明悬浮导航栏 -->
+<header class="custom-header" id="custom-header">
+  <div class="header-container">
+    <!-- 左侧标题 -->
+    <a href="<%- url_for('/') %>" class="header-title">
+      <%= theme.title || config.title %>
     </a>
+
+    <!-- 右侧菜单按钮 -->
+    <button class="menu-btn" id="menu-btn" aria-label="Toggle Menu">
+      <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
   </div>
 
-  <button class="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
-    <span class="line line-1"></span>
-    <span class="line line-2"></span>
-    <span class="line line-3"></span>
-  </button>
+  <!-- 下拉菜单面板 -->
+  <div class="dropdown-menu" id="dropdown-menu">
+    <% if (theme.menu) { %>
+      <% Object.keys(theme.menu).forEach(function(name) { %>
+        <a href="<%- url_for(theme.menu[name]) %>" class="menu-item">
+          <%= name %>
+        </a>
+      <% }); %>
+    <% } %>
+  </div>
+</header>
 
-  <nav class="nav-menu">
-    <ul class="nav-list">
-      <% if (theme.menu) { %> <% for (let i in theme.menu) { %>
-      <li>
-        <a href="<%- url_for(theme.menu[i]) %>"><%= __(`menu.${i}`) %></a>
-      </li>
-      <% } %> <% } %>
-    </ul>
-  </nav>
-</div>
+<style>
+  /* 导航栏固定在顶部，背景完全透明 */
+  .custom-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background: transparent; 
+    padding: 15px 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none; 
+  }
+  
+  .header-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: auto; 
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .menu-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s, filter 0.3s;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    width: 200px;
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px; 
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    pointer-events: auto;
+  }
+
+  .dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .menu-item {
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  /* =========================================
+     ☀️ 亮色模式适配（默认状态）
+     ========================================= */
+  /* 亮色下字变黑，保证在白底和亮色图片上能看清 */
+  .header-title { color: #222222; text-shadow: 0 1px 3px rgba(255,255,255,0.8); }
+  .menu-btn { color: #222222; filter: drop-shadow(0 1px 3px rgba(255,255,255,0.8)); }
+  
+  /* 亮色下菜单变白底 */
+  .dropdown-menu {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .menu-item { color: #333333; }
+  .menu-item:hover { background: rgba(0,0,0,0.05); color: #000000; }
+
+  /* =========================================
+     🌙 暗色模式适配
+     ========================================= */
+  @media (prefers-color-scheme: dark) {
+    /* 暗色下字变白 */
+    .header-title { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .menu-btn { color: #ffffff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+    
+    /* 暗色下菜单变深色黑底 */
+    .dropdown-menu {
+      background: rgba(30, 30, 30, 0.95);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .menu-item { color: #dddddd; }
+    .menu-item:hover { background: rgba(255,255,255,0.1); color: #ffffff; }
+  }
+</style>
+
+<script>
+  document.getElementById('menu-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    document.getElementById('dropdown-menu').classList.toggle('show');
+  });
+
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('dropdown-menu');
+    if (menu.classList.contains('show') && !menu.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
+</script>

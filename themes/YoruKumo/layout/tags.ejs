@@ -1,0 +1,67 @@
+<div class="custom-tag-page">
+  <h1 class="page-title"><%= page.title %></h1>
+  
+  <div class="tag-cloud-container">
+    <% site.tags.each(function(tag){ %>
+      <a href="<%- url_for(tag.path) %>" class="tag-item">
+        <%= tag.name %> <span class="tag-count"><%= tag.length %></span>
+      </a>
+    <% }) %>
+  </div>
+</div>
+
+<style>
+  /* 标签页背景适配亮暗色 */
+  .custom-tag-page {
+    padding: 40px 20px;
+    max-width: 850px;
+    margin: 0 auto;
+  }
+  .page-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #222;
+  }
+  @media (prefers-color-scheme: dark) { .page-title { color: #fff; } }
+
+  /* 标签容器 */
+  .tag-cloud-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* 单个标签的胶囊形状 */
+  .tag-item {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(128,128,128,0.2);
+    transition: transform 0.2s;
+  }
+  
+  .tag-item:hover {
+    transform: scale(1.05);
+  }
+
+  /* 右侧的数字小方块 */
+  .tag-count {
+    margin-left: 10px;
+    background: rgba(255,255,255,0.15);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+
+  /* 自动生成随机颜色（类似Tessera的质感） */
+  .tag-item:nth-child(5n+1) { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+  .tag-item:nth-child(5n+2) { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+  .tag-item:nth-child(5n+3) { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+  .tag-item:nth-child(5n+4) { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+  .tag-item:nth-child(5n+5) { background: rgba(236, 72, 153, 0.15); color: #f472b6; }
+</style>
