@@ -2,6 +2,8 @@
 title: 旧手机也可以做成carplay?
 date: 2026-10-16 18:14:12
 tags: 旧手机 carplay 车机 
+cover: https://i.imgur.com/erLAoYz.png
+categories: 应用APP
 ---
 # Diplay
 ##### https://github.com/shihabal3amri/Diplay
@@ -9,10 +11,6 @@ tags: 旧手机 carplay 车机
 Diplay是个来自shihabal3amri用户开源项目能让在安卓车机上用上Carplay
 
 Shihaba本身开的是比亚迪用的是DiLink的安卓车机 比亚迪大部分车型出厂不带CarPlay，想用只能花好几百甚至上千块买个CarPlay转接盒子而CarPlay本身又需要苹果的MFi认证车企要交认证费用，这个成本最终转嫁到车主身上。所以他做了一个技术上的替代方案：把转接盒子里的认证逻辑用纯软件实现，装个APK就能用，零额外硬件成本
-
-![描述](https://i.imgur.com/erLAoYz.png)
-##### 图片来自于网络上
-
 
 那为什么Diplay能在旧手机上运行呢？因为DiPlay的核心逻辑其实很简单——它只是把车机当作一块"显示器"，所有的运算都是iPhone在做。
 具体来说：CarPlay 的本质是"手机渲染，屏幕输出" iPhone负责运行导航、音乐、微信这些 App，然后把画面流传输到你的设备上。安卓设备（不管是车机还是旧手机）只负责三件事：接收画面、显示画面、把触控操作回传给iPhone所以安卓设备本身的性能基本不影响流畅度。哪怕是很老的安卓机，CPU 弱、内存小，都没关系，因为它不跑任何重任务，就是个"画中画"的显示终端。
