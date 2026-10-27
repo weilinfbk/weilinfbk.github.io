@@ -1,67 +1,83 @@
-<div class="to-top">
-  <svg class="icon" aria-hidden="true">
-    <use xlink:href="#icon-arrowup"></use>
+<!-- 右下角悬浮小方块箭头 -->
+<button id="custom-floating-btn" title="回到顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 向上指的箭头图标 -->
+    <path d="M12 19V5M5 12l7-7 7 7"/>
   </svg>
-</div>
+</button>
+
+<style>
+  /* 基础悬浮样式，固定在右下角 */
+  #custom-floating-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    width: 44px;  /* 稍微调小一点点 */
+    height: 44px;
+    border-radius: 12px; /* ⚠️ 关键修改：把 50% 改成 12px，变成小方块 */
+    background: rgba(30, 30, 30, 0.9); 
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    
+    /* 默认隐藏，滑下去才出现 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+  }
+
+  /* 当加上 show 类时显示 */
+  #custom-floating-btn.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  #custom-floating-btn:hover {
+    transform: scale(1.1);
+  }
+
+  #custom-floating-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* 亮色模式适配（白底黑字） */
+  @media (prefers-color-scheme: light) {
+    #custom-floating-btn {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333333;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+  }
+</style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const toTop = document.querySelector('.to-top');
-    if (!toTop) return;
+  document.addEventListener('DOMContentLoaded', function() {
+    const floatBtn = document.getElementById('custom-floating-btn');
+    
+    // 监听页面滚动
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        floatBtn.classList.add('show');
+      } else {
+        floatBtn.classList.remove('show');
+      }
+    });
 
-    const hasGsap = typeof gsap !== 'undefined';
-
-    if (hasGsap) {
-      // 初始隐藏状态
-      gsap.set(toTop, { opacity: 0, scale: 0.6, display: 'none' });
-      
-      let isVisible = false;
-
-      window.addEventListener('scroll', function () {
-        const shouldShow = window.scrollY > window.innerHeight;
-        
-        if (shouldShow && !isVisible) {
-          isVisible = true;
-          gsap.killTweensOf(toTop);
-          gsap.set(toTop, { display: 'flex' });
-          gsap.to(toTop, {
-            opacity: 1,
-            scale: 1,
-            duration: 0.4,
-            ease: 'back.out(1.7)'
-          });
-        } else if (!shouldShow && isVisible) {
-          isVisible = false;
-          gsap.killTweensOf(toTop);
-          gsap.to(toTop, {
-            opacity: 0,
-            scale: 0.6,
-            duration: 0.3,
-            ease: 'power2.in',
-            onComplete: () => {
-              if (!isVisible) gsap.set(toTop, { display: 'none' });
-            }
-          });
-        }
-      });
-
-      // Hover 交互与磁性效果在 animation.js 中全局托管
-    } else {
-      // 优雅降级：传统滚动监听
-      window.addEventListener('scroll', function () {
-        if (window.scrollY > window.innerHeight) {
-          toTop.style.display = 'flex';
-        } else {
-          toTop.style.display = 'none';
-        }
-      });
-    }
-
-    // 点击事件
-    toTop.addEventListener('click', function () {
+    // 点击回到顶部
+    floatBtn.addEventListener('click', function() {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: 'smooth'
       });
     });
   });

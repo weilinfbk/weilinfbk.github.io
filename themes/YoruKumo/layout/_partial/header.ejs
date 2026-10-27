@@ -29,20 +29,23 @@
 </header>
 
 <style>
-  /* 导航栏固定在顶部，背景完全透明 */
+  /* =========================================
+     1. 默认状态：纯透明（没有任何格子）
+     ========================================= */
   .custom-header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 9999;
-    background: transparent; 
+    background: transparent; /* 👈 纯透明 */
     padding: 15px 20px;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     pointer-events: none; 
+    transition: background 0.3s ease, backdrop-filter 0.3s ease; /* 平滑过渡动画 */
   }
   
   .header-container {
@@ -53,6 +56,26 @@
     pointer-events: auto; 
   }
 
+  /* =========================================
+     2. 滑动后：出现半透明毛玻璃格子
+     ========================================= */
+  .custom-header.is-scrolled {
+    background: rgba(255, 255, 255, 0.85); /* 亮色模式：白底半透明 */
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* 淡淡的底边阴影 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .custom-header.is-scrolled {
+      background: rgba(30, 30, 30, 0.85); /* 暗色模式：黑底半透明 */
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+  }
+
+  /* =========================================
+     3. 文字和图标颜色（带阴影防看不清）
+     ========================================= */
   .header-title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -71,6 +94,19 @@
     transition: color 0.3s, filter 0.3s;
   }
 
+  /* 亮色模式默认字色 */
+  .header-title { color: #222222; text-shadow: 0 2px 6px rgba(255,255,255,0.9); }
+  .menu-btn { color: #222222; filter: drop-shadow(0 2px 6px rgba(255,255,255,0.9)); }
+  
+  /* 暗色模式默认字色 */
+  @media (prefers-color-scheme: dark) {
+    .header-title { color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
+    .menu-btn { color: #ffffff; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8)); }
+  }
+
+  /* =========================================
+     4. 菜单面板保持之前的逻辑
+     ========================================= */
   .dropdown-menu {
     position: absolute;
     top: 65px;
@@ -103,42 +139,21 @@
     transition: background 0.2s, color 0.2s;
   }
 
-  /* =========================================
-     ☀️ 亮色模式适配（默认状态）
-     ========================================= */
-  /* 亮色下字变黑，保证在白底和亮色图片上能看清 */
-  .header-title { color: #222222; text-shadow: 0 1px 3px rgba(255,255,255,0.8); }
-  .menu-btn { color: #222222; filter: drop-shadow(0 1px 3px rgba(255,255,255,0.8)); }
-  
-  /* 亮色下菜单变白底 */
-  .dropdown-menu {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    border: 1px solid rgba(0,0,0,0.05);
-  }
+  /* 亮色菜单 */
+  .dropdown-menu { background: rgba(255, 255, 255, 0.95); box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
   .menu-item { color: #333333; }
   .menu-item:hover { background: rgba(0,0,0,0.05); color: #000000; }
 
-  /* =========================================
-     🌙 暗色模式适配
-     ========================================= */
+  /* 暗色菜单 */
   @media (prefers-color-scheme: dark) {
-    /* 暗色下字变白 */
-    .header-title { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-    .menu-btn { color: #ffffff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-    
-    /* 暗色下菜单变深色黑底 */
-    .dropdown-menu {
-      background: rgba(30, 30, 30, 0.95);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
+    .dropdown-menu { background: rgba(30, 30, 30, 0.95); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
     .menu-item { color: #dddddd; }
     .menu-item:hover { background: rgba(255,255,255,0.1); color: #ffffff; }
   }
 </style>
 
 <script>
+  // 菜单点击逻辑
   document.getElementById('menu-btn').addEventListener('click', function(e) {
     e.stopPropagation();
     document.getElementById('dropdown-menu').classList.toggle('show');
@@ -148,6 +163,18 @@
     const menu = document.getElementById('dropdown-menu');
     if (menu.classList.contains('show') && !menu.contains(e.target)) {
       menu.classList.remove('show');
+    }
+  });
+
+  // 👇👇👇 新增：监听页面滑动，控制导航栏背景 👇👇👇
+  window.addEventListener('scroll', function() {
+    const header = document.getElementById('custom-header');
+    // 只要页面往下滑动超过 20 像素，就给 header 加上背景格子
+    if (window.scrollY > 20) {
+      header.classList.add('is-scrolled');
+    } else {
+      // 滑回最顶部，立刻恢复纯透明
+      header.classList.remove('is-scrolled');
     }
   });
 </script>
