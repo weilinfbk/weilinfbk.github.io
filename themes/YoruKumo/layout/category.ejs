@@ -82,16 +82,16 @@
     padding-left: 16px; 
   }
 
-  /* 👇 给线条加上了圆角 */
+  /* 👇 线条加宽，圆角同步 */
   .timeline::before { 
     content: ''; 
     position: absolute; 
     left: 0px; 
     top: 0px; 
     bottom: 20px; 
-    width: 2px; 
+    width: 4px; /* 👈 这里从 2px 扩到了 4px */
     background: #e2e8f0; 
-    border-radius: 2px; /* 👈 这一行就是圆角，让头尾变圆 */
+    border-radius: 4px; /* 圆角也扩大 */
   }
   @media (prefers-color-scheme: dark) { .timeline::before { background: #334155; } }
 
@@ -139,7 +139,8 @@
     .content-card { padding: 25px 20px; }
     
     .timeline { padding-left: 12px; }
-    .timeline::before { top: 0px; } 
+    /* 👇 手机端稍微细一点，防止太突兀 */
+    .timeline::before { top: 0px; width: 3px; border-radius: 3px; } 
     
     .header-item { margin-bottom: 8px; }
     .post-title { font-size: 1.8rem; }
