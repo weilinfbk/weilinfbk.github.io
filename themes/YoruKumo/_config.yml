@@ -6,6 +6,7 @@ title: Weilin Blog
 # 菜单 | menu
 menu:
   Home: /
+  Categories: /categories/
   About: /about
 
 # 轮播图 | swiper

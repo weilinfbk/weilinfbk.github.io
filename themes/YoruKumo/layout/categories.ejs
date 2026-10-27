@@ -1,11 +1,90 @@
-<div class="custom-tag-page">
-  <h1 class="page-title"><%= page.title %></h1>
-  
-  <div class="tag-cloud-container">
-    <% site.categories.each(function(category){ %>
-      <a href="<%- url_for(category.path) %>" class="tag-item">
-        <%= category.name %> <span class="tag-count"><%= category.length %></span>
-      </a>
-    <% }) %>
-  </div>
+<%- partial('_partial/header') %>
+
+<div class="post-page-wrapper">
+  <main class="post-container">
+    <article class="post-card content-card">
+      
+      <h1 class="post-title">Classification</h1>
+      
+      <ul class="category-list">
+        <% if (site.categories.length) { %>
+          <% site.categories.each(function(category) { %>
+            <li>
+              <a href="<%- url_for(category.path) %>">
+                <!-- 👇 这里换成了胶囊竖线 -->
+                <span class="cat-line"></span>
+                <span class="cat-name"><%= category.name %></span>
+                <span class="cat-count">(<%= category.length %>)</span>
+              </a>
+            </li>
+          <% }) %>
+        <% } else { %>
+          <li style="color: #888; padding: 20px;">还没有任何分类哦~</li>
+        <% } %>
+      </ul>
+
+    </article>
+  </main>
 </div>
+
+<style>
+  .post-page-wrapper { padding: 40px 20px 60px; display: flex; justify-content: center; width: 100%; box-sizing: border-box; }
+  .post-container { width: 100%; max-width: 850px; box-sizing: border-box; }
+  .post-card { background-color: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); box-sizing: border-box; }
+  
+  @media (prefers-color-scheme: dark) {
+    .post-card { background-color: #1e1e1e; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
+  }
+
+  .content-card { padding: 40px 30px; }
+  .post-title { font-size: 2.2rem; font-weight: 800; color: #222222; margin-bottom: 40px; }
+  @media (prefers-color-scheme: dark) { .post-title { color: #ffffff; } }
+
+  /* 列表基础样式 */
+  .category-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px; }
+  
+  .category-list li a { 
+    display: flex; 
+    align-items: center; 
+    text-decoration: none; 
+    font-size: 1.2rem; 
+    transition: transform 0.2s ease; 
+  }
+  .category-list li a:hover { transform: translateX(5px); }
+  
+  /* 👇 核心修改：两端圆润的短竖线 */
+  .cat-line {
+    display: inline-block;
+    width: 4px;   /* 线条的粗细 */
+    height: 18px; /* 线条的高度 */
+    background: #cbd5e1; 
+    border-radius: 999px; /* 👈 这个属性让首尾变成完美的半圆形 */
+    margin-right: 15px;
+    flex-shrink: 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    .cat-line { background: #475569; }
+  }
+  
+  /* 让名字占满剩余空间，把数字挤到最右边 */
+  .cat-name { 
+    color: #333333; 
+    font-weight: 600; 
+    flex: 1; 
+  }
+  
+  .cat-count { color: #888888; font-size: 1rem; font-weight: normal; }
+
+  @media (prefers-color-scheme: dark) {
+    .cat-name { color: #dddddd; }
+    .cat-count { color: #777777; }
+  }
+  
+  @media (max-width: 768px) {
+    .post-page-wrapper { padding: 20px 10px 30px; }
+    .content-card { padding: 30px 20px; }
+    .post-title { font-size: 1.8rem; margin-bottom: 30px; }
+    .cat-line { width: 3px; height: 16px; margin-right: 12px; }
+    .category-list li a { font-size: 1.1rem; }
+  }
+</style>

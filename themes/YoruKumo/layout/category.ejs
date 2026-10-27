@@ -1,0 +1,156 @@
+<%- partial('_partial/header') %>
+
+<div class="post-page-wrapper">
+  <main class="post-container">
+    <article class="post-card content-card">
+      
+      <div class="timeline">
+        
+        <!-- 1. 头部大标题 -->
+        <div class="timeline-item header-item">
+          <div class="timeline-content">
+            <h1 class="post-title">Category - <%= page.category %></h1>
+          </div>
+        </div>
+
+        <%
+          var lastYear = null; 
+          page.posts.each(function(post) {
+            var currentYear = date(post.date, 'YYYY');
+            if (currentYear !== lastYear) {
+              lastYear = currentYear;
+        %>
+          <!-- 2. 年份节点 -->
+          <div class="timeline-item year-item">
+            <div class="timeline-content">
+              <div class="year-text"><%= currentYear %></div>
+            </div>
+          </div>
+        <% } %>
+
+          <!-- 3. 文章节点 -->
+          <div class="timeline-item post-item">
+            <div class="timeline-content">
+              <a href="<%- url_for(post.path) %>" class="timeline-post">
+                
+                <!-- 左侧：正方形图片 -->
+                <div class="post-thumb">
+                  <% if (post.cover || post.top_img) { %>
+                    <img src="<%- post.cover || post.top_img %>" alt="<%= post.title %>">
+                  <% } else { %>
+                    <div class="css-flower-placeholder">
+                      <span>🌸</span>
+                    </div>
+                  <% } %>
+                </div>
+                
+                <!-- 右侧：日期和标题 -->
+                <div class="post-info">
+                  <div class="post-date">
+                    <i class="far fa-calendar-alt"></i> <%= date(post.date, 'YYYY-MM-DD') %>
+                  </div>
+                  <div class="post-title-text"><%= post.title %></div>
+                </div>
+
+              </a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      
+    </article>
+  </main>
+</div>
+
+<style>
+  /* ============ 基础外壳 ============ */
+  .post-page-wrapper { padding: 40px 20px 60px; display: flex; justify-content: center; width: 100%; box-sizing: border-box; }
+  .post-container { width: 100%; max-width: 850px; box-sizing: border-box; }
+  .post-card { background-color: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); box-sizing: border-box; }
+  
+  @media (prefers-color-scheme: dark) {
+    .post-card { background-color: #1e1e1e; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
+  }
+
+  .content-card { padding: 40px 30px; }
+
+  /* ============ 只要线条的时间轴 ============ */
+  .timeline { 
+    position: relative; 
+    display: flex; 
+    flex-direction: column; 
+    padding-left: 16px; 
+  }
+
+  /* 👇 给线条加上了圆角 */
+  .timeline::before { 
+    content: ''; 
+    position: absolute; 
+    left: 0px; 
+    top: 0px; 
+    bottom: 20px; 
+    width: 2px; 
+    background: #e2e8f0; 
+    border-radius: 2px; /* 👈 这一行就是圆角，让头尾变圆 */
+  }
+  @media (prefers-color-scheme: dark) { .timeline::before { background: #334155; } }
+
+  .timeline-item { 
+    display: flex; 
+    align-items: stretch; 
+    margin-bottom: 20px; 
+    position: relative; 
+  }
+
+  /* 内容区 */
+  .timeline-content { flex: 1; width: 100%; }
+
+  /* ============ 间距微调 ============ */
+  .header-item { margin-bottom: 10px; } 
+  .post-title { font-size: 2.2rem; font-weight: 700; color: #222222; margin: 0; line-height: 1.2; }
+  @media (prefers-color-scheme: dark) { .post-title { color: #ffffff; } }
+
+  .year-item { margin-bottom: 24px; margin-top: -10px; } 
+  .year-text { font-size: 1.5rem; font-weight: 600; color: #444444; margin: 0; line-height: 1; }
+  @media (prefers-color-scheme: dark) { .year-text { color: #cccccc; } }
+
+  /* ============ 文章卡片 ============ */
+  .timeline-post { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+  .post-thumb { flex-shrink: 0; }
+  .post-thumb img { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+  .css-flower-placeholder {
+    width: 90px; height: 90px; border-radius: 12px;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .css-flower-placeholder span { font-size: 2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+  @media (prefers-color-scheme: dark) { .css-flower-placeholder { background: linear-gradient(135deg, #2b1055 0%, #7597de 100%); } }
+  
+  .post-info { display: flex; flex-direction: column; justify-content: center; }
+  .post-date { font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; }
+  .post-title-text { font-size: 1.25rem; font-weight: 600; color: #333333; line-height: 1.4; }
+  @media (prefers-color-scheme: dark) { .post-title-text { color: #e2e8f0; } }
+
+  /* ============ 手机端适配 ============ */
+  @media (max-width: 768px) {
+    .post-page-wrapper { padding: 20px 10px 30px; }
+    .content-card { padding: 25px 20px; }
+    
+    .timeline { padding-left: 12px; }
+    .timeline::before { top: 0px; } 
+    
+    .header-item { margin-bottom: 8px; }
+    .post-title { font-size: 1.8rem; }
+    
+    .year-item { margin-bottom: 16px; margin-top: -6px; }
+    .year-text { font-size: 1.4rem; }
+    
+    .timeline-post { gap: 12px; }
+    .post-thumb img, .css-flower-placeholder { width: 75px; height: 75px; border-radius: 10px; }
+    .css-flower-placeholder span { font-size: 1.5rem; }
+    .post-date { font-size: 0.75rem; margin-bottom: 4px; }
+    .post-title-text { font-size: 1.1rem; }
+  }
+</style>
