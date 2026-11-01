@@ -1,3 +1,4 @@
+
 <%- partial('_partial/header') %>
 
 <div class="post-page-wrapper">
@@ -193,4 +194,33 @@
     .card-meta { font-size: 0.85rem; }
     .meta-divider { display: none; }
   }
+/* 👇 暴力纯 CSS 入场动画 */
+@keyframes slideUpFade {
+  0% { 
+    opacity: 0; 
+    transform: translateY(50px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.notice-board {
+  /* 第一个先出来，停留 0.6 秒 */
+  animation: slideUpFade 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.post-card {
+  /* 卡片依次出来 */
+  animation: slideUpFade 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  opacity: 0; /* 初始隐藏 */
+}
+
+/* 错开每个卡片的出现时间，形成瀑布流效果 */
+.post-card:nth-child(1) { animation-delay: 0.1s; }
+.post-card:nth-child(2) { animation-delay: 0.2s; }
+.post-card:nth-child(3) { animation-delay: 0.3s; }
+.post-card:nth-child(4) { animation-delay: 0.4s; }
+.post-card:nth-child(5) { animation-delay: 0.5s; }
 </style>
