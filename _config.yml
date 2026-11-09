@@ -104,3 +104,11 @@ deploy:
   type: git
   repo: https://github.com/weilinfbk/weilinfbk.github.io.git
   branch: main
+
+# RSS 订阅配置
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content: true
