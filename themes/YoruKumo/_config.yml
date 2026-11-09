@@ -52,3 +52,8 @@ gsap:
   parallax: true # 是否启用顶部 Banner 视差滚动效果
   hover_effect: true # 是否启用卡片悬浮 GSAP 交互效果
 
+ # RSS 
+  menu:
+  Home: /
+  RSS: /atom.xml
+  About: /about/
