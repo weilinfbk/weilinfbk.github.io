@@ -18,8 +18,6 @@
 
   <!-- 下拉菜单面板 -->
   <div class="dropdown-menu" id="dropdown-menu">
-    <!-- 👇 这里就是你想要的 RSS -->
-    <a href="/atom.xml" target="_blank" class="menu-item">RSS</a>
     <% if (theme.menu) { %>
       <% Object.keys(theme.menu).forEach(function(name) { %>
         <a href="<%- url_for(theme.menu[name]) %>" class="menu-item">
