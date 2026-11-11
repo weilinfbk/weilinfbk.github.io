@@ -134,4 +134,77 @@
   border: none;
   border-top: 1px solid rgba(128, 128, 128, 0.3); /* 线条颜色 */
 }
+
+/* 👇 GitHub 卡片专属样式 */
+.my-github-card {
+  display: flex;
+  align-items: flex-start;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 20px 0;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.my-github-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.gh-avatar {
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.gh-avatar img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.gh-content {
+  flex: 1;
+}
+
+.gh-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.gh-owner { color: #64748b; font-weight: normal; }
+.gh-repo { margin-left: 4px; }
+
+.gh-icon {
+  margin-left: auto;
+  color: #1e293b;
+}
+
+.gh-desc {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.gh-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* 暗色模式自适应 */
+@media (prefers-color-scheme: dark) {
+  .my-github-card { background: #1e1e1e; border-color: #333; }
+  .my-github-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+  .gh-title { color: #f8fafc; }
+  .gh-icon { color: #f8fafc; }
+  .gh-desc { color: #cbd5e1; }
+}
 </style>
