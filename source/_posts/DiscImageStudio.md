@@ -1,7 +1,7 @@
 ---
 title: Disc Image Studio
 date: 2026-11-11 10:57:40
-tags: CD,Github 
+tags: CD Github 
 cover：https://i.imgur.com/yYBRFda.jpeg
 categories: GitHub
 ---
