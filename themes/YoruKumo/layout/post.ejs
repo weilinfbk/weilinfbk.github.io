@@ -16,7 +16,7 @@
         
         <!-- 原有的时间、分类、字数、阅读时长 -->
         <div class="post-meta">
-          <span>📅 Published on <%= date(page.date, 'YYYY-MM-DD HH:mm') %></span>
+          <span>📅 <%= date(page.date, 'YYYY-MM-DD HH:mm') %></span>
           
           <% if (page.categories && page.categories.length) { %>
             <span class="meta-divider">|</span>
@@ -24,9 +24,9 @@
           <% } %>
           
           <span class="meta-divider">|</span>
-          <span>📝 Word: <%= wordcount(page.content) %></span>
+          <span>📝 : <%= wordcount(page.content) %></span>
           <span class="meta-divider">|</span>
-          <span>⏱️ Read time: <%= min2read(page.content) %> minute</span>
+          <span>⏱️ : <%= min2read(page.content) %> minute</span>
         </div>
 
         <!-- 👇 新增：在你要求的下面加上 Tags 👇 -->
