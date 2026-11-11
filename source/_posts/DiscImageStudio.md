@@ -5,8 +5,7 @@ tags: CD Github
 cover: https://imgur.com/yYBRFda.jpeg
 categories: GitHub
 ---
-用普通刻录机在光盘上“画画”：Disc。Image Studio 体验与分析
-::github{repo="JiaFeiMiao-K-Cat/DiscImageStudio"}
+用普通刻录机在光盘上“画画” Disc Image Studio 体验与分析
 
 最近刷到一个很有意思的开源项目——DiscImageStudio。它做的事情一句话就能说清楚：把一张图片刻到光盘的数据面上，让光盘本身变成一幅肉眼可见的浮雕画。
 

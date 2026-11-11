@@ -27,9 +27,12 @@
         
         <!-- 文字信息 -->
         <div class="card-info">
-          <h2 class="card-title">
-            <a href="<%- url_for(post.path) %>"><%= post.title || '(无标题)' %></a>
-          </h2>
+       <h2 class="card-title">
+  <% if (post.sticky) { %>
+    <span class="sticky-badge">置顶</span>
+  <% } %>
+  <a href="<%- url_for(post.path) %>"><%= post.title || '(无标题)' %></a>
+      </h2>    
           
           <p class="card-excerpt">
             <%- strip_html(post.excerpt || post.content).substring(0, 60) %>...
@@ -54,6 +57,255 @@
         </div>
       </article>
     <% }) %>
+<!-- 👇 分页器开始 👇 -->
+<% if (page.total > 1) { %>
+  <div class="custom-pagination">
+    <%- paginator({
+      prev_text: '&lsaquo;', 
+      next_text: '&rsaquo;',  
+      mid_size: 1,            
+      end_size: 1,            
+      space: '&hellip;',      
+      escape: false           
+    }) %>
+  </div>
+<% } %>
+<!-- 👆 分页器结束 👆 -->
+              <!-- 👇 日历与倒计时（英文版） 👇 -->
+<div class="calendar-wrapper">
+  <div class="cal-card">
+    <div class="cal-left">
+      <div class="cal-week" id="my-week">Loading...</div>
+      <div class="cal-day" id="my-day">--</div>
+      <div class="cal-year-month" id="my-ym">--</div>
+      <div class="cal-lunar" id="my-lunar">--</div>
+    </div>
+    <div class="cal-right">
+      <div class="cal-grid-header">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+      </div>
+      <div class="cal-grid" id="my-grid"></div>
+    </div>
+  </div>
+
+  <div class="countdown-card">
+    <div class="cd-left">
+      <div class="cd-label">Spring Festival</div>
+      <div class="cd-days" id="my-cd-days">--</div>
+      <div class="cd-date" id="my-cd-date">--</div>
+    </div>
+    <div class="cd-right">
+      <div class="progress-item">
+        <span class="pro-label">Year</span>
+        <div class="pro-bar-bg"><div class="pro-bar-fill" id="my-pro-year"></div></div>
+        <span class="pro-text" id="my-txt-year">--%</span>
+      </div>
+      <div class="progress-item">
+        <span class="pro-label">Month</span>
+        <div class="pro-bar-bg"><div class="pro-bar-fill" id="my-pro-month"></div></div>
+        <span class="pro-text" id="my-txt-month">--%</span>
+      </div>
+      <div class="progress-item">
+        <span class="pro-label">Week</span>
+        <div class="pro-bar-bg"><div class="pro-bar-fill" id="my-pro-week"></div></div>
+        <span class="pro-text" id="my-txt-week">--%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .calendar-wrapper { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+  .cal-card, .countdown-card {
+    background: #ffffff; border-radius: 16px; padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
+    box-sizing: border-box; width: 100%; display: flex; justify-content: space-between;
+  }
+  @media (prefers-color-scheme: dark) {
+    .cal-card, .countdown-card { background: #1e1e1e; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
+  }
+  
+  /* 左侧日期区 */
+  .cal-left { display: flex; flex-direction: column; justify-content: center; width: 42%; }
+  .cal-week { font-size: 0.85rem; color: #64748b; font-weight: bold; text-transform: uppercase; }
+  .cal-day { font-size: 4rem; font-weight: 800; color: #00d2ff; line-height: 1.1; margin: 5px 0; }
+  .cal-year-month, .cal-lunar { font-size: 0.75rem; color: #64748b; margin-top: 3px; line-height: 1.4; }
+  
+  /* 右侧日历网格 */
+  .cal-right { width: 55%; display: flex; flex-direction: column; }
+  .cal-grid-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.7rem; color: #94a3b8; margin-bottom: 8px; font-weight: bold;}
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .cal-grid span { font-size: 0.85rem; color: #334155; padding: 4px 0; border-radius: 6px; }
+  @media (prefers-color-scheme: dark) { .cal-grid span { color: #cbd5e1; } }
+  .cal-grid span.today { background: #00d2ff; color: #fff; font-weight: bold; }
+
+  /* 倒计时与进度条 */
+  .cd-left { width: 38%; display: flex; flex-direction: column; justify-content: center; border-right: 1px dashed rgba(128,128,128,0.2); padding-right: 15px; }
+  .cd-label { font-size: 0.85rem; color: #64748b; font-weight: bold; }
+  .cd-days { font-size: 2.5rem; font-weight: 800; color: #00d2ff; line-height: 1.2; margin: 5px 0; }
+  .cd-date { font-size: 0.8rem; color: #94a3b8; }
+
+  .cd-right { width: 58%; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+  .progress-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+  .pro-label { color: #64748b; width: 42px; flex-shrink: 0; font-weight: 500;}
+  .pro-bar-bg { flex: 1; height: 8px; background: rgba(128,128,128,0.2); border-radius: 4px; overflow: hidden; }
+  .pro-bar-fill { height: 100%; background: #00d2ff; border-radius: 4px; width: 0%; transition: width 1s ease; }
+  .pro-text { color: #94a3b8; width: 40px; text-align: right; flex-shrink: 0; }
+
+  @media (max-width: 768px) {
+    .cal-card, .countdown-card { padding: 15px; }
+    .cal-day { font-size: 3rem; }
+    .cal-grid span { font-size: 0.75rem; padding: 2px 0; }
+    .cd-days { font-size: 2rem; }
+    .pro-text { width: 35px; font-size: 0.7rem;}
+  }
+</style>
+
+<script>
+window.addEventListener('load', function() {
+  try {
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = now.getMonth();
+    var d = now.getDate();
+    var wDay = now.getDay();
+    // 英文星期
+    var weekArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+    // 1. 计算周数和天数
+    var start = new Date(y, 0, 1);
+    var diff = now - start;
+    var dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+    var weekNum = Math.ceil(dayOfYear / 7);
+
+    // 填充左侧文字 (英文)
+    document.getElementById('my-week').innerText = 'Week ' + weekNum + ' · ' + weekArr[wDay];
+    document.getElementById('my-day').innerText = d;
+    document.getElementById('my-ym').innerText = y + '-' + (m + 1) + ' | Day ' + dayOfYear;
+    
+    // 2. 农历计算 (使用 en-US 的语言环境输出英文农历)
+    try {
+      var lunarStr = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', { month: 'long', day: 'numeric' }).format(now);
+      document.getElementById('my-lunar').innerText = 'Lunar: ' + lunarStr;
+    } catch(e) {
+      document.getElementById('my-lunar').innerText = 'Lunar Calendar';
+    }
+
+    // 3. 渲染日历格子
+    var gridEl = document.getElementById('my-grid');
+    var firstDay = new Date(y, m, 1).getDay();
+    var daysInMonth = new Date(y, m + 1, 0).getDate();
+    var html = '';
+    for (var i = 0; i < firstDay; i++) { html += '<span></span>'; }
+    for (var i = 1; i <= daysInMonth; i++) {
+      html += '<span ' + (i === d ? 'class="today"' : '') + '>' + i + '</span>';
+    }
+    gridEl.innerHTML = html;
+
+    // 4. 进度条计算
+    var startOfYear = new Date(y, 0, 1);
+    var endOfYear = new Date(y + 1, 0, 1);
+    var yearPct = Math.round(((now - startOfYear) / (endOfYear - startOfYear)) * 100);
+    document.getElementById('my-pro-year').style.width = yearPct + '%';
+    document.getElementById('my-txt-year').innerText = yearPct + '%';
+
+    var startOfMonth = new Date(y, m, 1);
+    var endOfMonth = new Date(y, m + 1, 1);
+    var monthPct = Math.round(((now - startOfMonth) / (endOfMonth - startOfMonth)) * 100);
+    document.getElementById('my-pro-month').style.width = monthPct + '%';
+    document.getElementById('my-txt-month').innerText = monthPct + '%';
+
+    var wDay2 = wDay === 0 ? 7 : wDay;
+    var weekPct = Math.round((wDay2 / 7) * 100);
+    document.getElementById('my-pro-week').style.width = weekPct + '%';
+    document.getElementById('my-txt-week').innerText = weekPct + '%';
+
+// 5. 距离春节倒计时 (自动判断年份版)
+var springDates = {
+  2026: '2026-02-17',
+  2027: '2027-02-06',
+  2028: '2028-01-26',
+  2029: '2029-02-13',
+  2030: '2030-02-03'
+};
+
+var currentY = now.getFullYear();
+var targetDateStr = springDates[currentY];
+
+// 如果今年的春节字典里没有，或者今年的春节已经过了，就自动找明年的
+if (!targetDateStr || now > new Date(targetDateStr + 'T23:59:59')) {
+  targetDateStr = springDates[currentY + 1];
+}
+
+if (targetDateStr) {
+  var sfDate = new Date(targetDateStr);
+  var daysLeft = Math.ceil((sfDate - now) / (1000 * 60 * 60 * 24));
+  document.getElementById('my-cd-days').innerText = daysLeft;
+  document.getElementById('my-cd-date').innerText = 'Target: ' + targetDateStr;
+} else {
+  // 兜底：如果你的字典没更新到那一年，就显示 TBD
+  document.getElementById('my-cd-days').innerText = 'TBD';
+  document.getElementById('my-cd-date').innerText = 'Target: Next Year';
+  }
+    
+  } catch (error) {
+    console.log("Calendar Load Error:", error);
+  }
+});
+</script>
+<!-- 👇 小站资讯面板（精简版，无图表） 👇 -->
+<div class="site-metrics-card">
+  <h2 class="metrics-title">📊 Site Info</h2>
+  
+  <div class="metrics-grid">
+    <div class="metric-item">
+      <div class="metric-value"><%= site.posts.length %></div>
+      <div class="metric-label">Total Posts</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-value">
+        <%
+          var totalWords = 0;
+          site.posts.each(function(p) {
+            var wc = wordcount(p.content);
+            if(wc && !isNaN(wc)) { totalWords += wc; }
+          });
+          var avgWords = site.posts.length > 0 ? Math.floor(totalWords / site.posts.length) : 0;
+        %>
+        <%= avgWords %>
+      </div>
+      <div class="metric-label">Avg Words</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-value" id="busuanzi_value_site_pv">--</div>
+      <div class="metric-label">Page Views</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .site-metrics-card {
+    background: #ffffff; border-radius: 16px; padding: 15px 20px; width: 100%; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
+    box-sizing: border-box; 
+    margin-top: 0px; 
+  }
+  @media (prefers-color-scheme: dark) {
+    .site-metrics-card { background: #1e1e1e; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; }
+  }
+  .metrics-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 10px 0; color: #222; }
+  @media (prefers-color-scheme: dark) { .metrics-title { color: #fff; } }
+  
+  .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; } /* 删除了下边距 */
+  .metric-item { background: #f8fafc; border-radius: 10px; padding: 10px; text-align: center; } 
+  @media (prefers-color-scheme: dark) { .metric-item { background: rgba(255,255,255,0.03); } }
+  
+  .metric-value { font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 2px; }
+  .metric-label { font-size: 0.75rem; color: #64748b; }
+</style>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- 👆 小站资讯面板结束 👆 -->
 
   </main>
 </div>
@@ -223,4 +475,91 @@
 .post-card:nth-child(3) { animation-delay: 0.3s; }
 .post-card:nth-child(4) { animation-delay: 0.4s; }
 .post-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* 👇 超级迷你置顶标签 */
+.sticky-badge {
+  display: inline-block;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 0.8rem; /* 👈 字缩到最小 */
+  padding: 2px 6px;  /* 👈 框子缩到最小 */
+  border-radius: 4px;
+  vertical-align: middle; /* 和标题对齐 */
+  margin-right: 6px;
+  margin-bottom: 4px;
+  font-weight: normal;
+  line-height: 1;
+          }
+/* 👇 灰色主题分页器皮肤 👇 */
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 30px 0 10px 0;
+  width: 100%;
+}
+
+/* 普通页码和箭头的方块（暗色模式：深灰底浅灰字） */
+.custom-pagination .page-number,
+.custom-pagination .extend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #2d3748; /* 偏深的灰色 */
+  color: #cbd5e1; /* 浅灰字 */
+  text-decoration: none;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* 亮色模式下变成浅灰底深灰字 */
+@media (prefers-color-scheme: light) {
+  .custom-pagination .page-number,
+  .custom-pagination .extend {
+    background: #f1f5f9;
+    color: #475569;
+  }
+}
+
+/* 鼠标悬浮效果 */
+.custom-pagination .page-number:hover,
+.custom-pagination .extend:hover {
+  background: #475569; /* 暗色下悬浮变亮一点的灰 */
+  transform: translateY(-2px);
+}
+@media (prefers-color-scheme: light) {
+  .custom-pagination .page-number:hover,
+  .custom-pagination .extend:hover {
+    background: #e2e8f0; /* 亮色下悬浮变深一点的灰 */
+  }
+}
+
+/* 当前页（高级灰高亮，深色模式下用白底黑字反色，最显眼） */
+.custom-pagination .current {
+  background: #e2e8f0 !important; 
+  color: #111111 !important; 
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1); 
+}
+
+/* 亮色模式下的当前页（深灰底白字） */
+@media (prefers-color-scheme: light) {
+  .custom-pagination .current {
+    background: #475569 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 省略号 */
+.custom-pagination .space {
+  color: #94a3b8;
+  letter-spacing: 2px;
+  padding: 0 5px;
+          }
 </style>
