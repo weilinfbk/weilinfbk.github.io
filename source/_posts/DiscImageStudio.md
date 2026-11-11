@@ -6,8 +6,7 @@ cover: https://imgur.com/yYBRFda.jpeg
 categories: GitHub
 ---
 用普通刻录机在光盘上“画画”：Disc。Image Studio 体验与分析
-
-##### 项目地址：https://github.com/JiaFeiMiao-K-Cat/DiscImageStudio/
+::github{repo="JiaFeiMiao-K-Cat/DiscImageStudio"}
 
 最近刷到一个很有意思的开源项目——DiscImageStudio。它做的事情一句话就能说清楚：把一张图片刻到光盘的数据面上，让光盘本身变成一幅肉眼可见的浮雕画。
 
@@ -59,8 +58,6 @@ categories: GitHub
 · 校准有学习成本：每款盘片物理参数不同，得牺牲盘片做标定。
 · GUI 仅限 Windows：Linux/macOS 只有实验性 CLI。
 · 测试覆盖不全：项目文档承认部分路径（比如 CD 数据盘 DAO）还没经过物理实盘验证。
-
-写在最后
 
 DiscImageStudio 最打动我的地方，是它用软件算法绕过了硬件限制。专用光驱和专用盘片的成本，被转化成了校准的学习成本和试错的盘片成本。
 
