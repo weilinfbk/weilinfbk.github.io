@@ -13,7 +13,7 @@ categories: GitHub
 
 听起来像复古极客玩具？但它背后的技术含量，远比“刻个图案”高得多。
 
-
+![CD图片](https://i.imgur.com/5Wbj2US.jpeg)
 
 它到底在做什么？
 早些年，LightScribe、DiscT@2 这类技术可以在光盘标签面或数据面“画图”，但前提是你得买专用光驱和专用盘片。DiscImageStudio 的思路完全相反：
