@@ -2,7 +2,7 @@
 title: Disc Image Studio
 date: 2026-11-11 10:57:40
 tags: CD Github 
-cover：https://i.imgur.com/yYBRFda.jpeg
+cover：https://imgur.com/yYBRFda.jpeg
 categories: GitHub
 ---
 用普通刻录机在光盘上“画画”：Disc。Image Studio 体验与分析
