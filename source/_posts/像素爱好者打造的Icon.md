@@ -3,7 +3,7 @@ title: 像素爱好者打造的Icon
 date: 2026-10-16 07:28:36
 tags: 像素 电脑 图标
 cover: https://i.imgur.com/98RhCOS.png
-categories: 主题介绍
+categories: GitHub
 ---
 ###### https://pixelated.foreignseal.com/
 为像素爱好者打造的 Emoji 与 Icon 素材宝库
